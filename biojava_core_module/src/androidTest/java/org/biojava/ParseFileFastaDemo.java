@@ -1,38 +1,27 @@
 package org.biojava;
 
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
-import org.biojava.demo.ParseFastaFileDemo;
 import org.biojava.nbio.core.sequence.DNASequence;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AmbiguityDNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.AmbiguityRNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
-import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.io.DNASequenceCreator;
 import org.biojava.nbio.core.sequence.io.FastaReader;
 import org.biojava.nbio.core.sequence.io.GenericFastaHeaderParser;
-import org.biojava.nbio.core.sequence.io.ProteinSequenceCreator;
 import org.biojava.nbio.core.sequence.template.CompoundSet;
 import org.biojava.nbio.core.sequence.template.Sequence;
 import org.biojava.nbio.core.sequence.transcription.Frame;
 import org.biojava.nbio.core.sequence.transcription.TranscriptionEngine;
-import org.biojava.nbio.core.util.InputStreamProvider;
-import org.biojava.nbio.core.util.InputStreamProvider_Edvino;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by edvinas on 17.5.4.

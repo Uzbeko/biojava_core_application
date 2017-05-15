@@ -8,7 +8,7 @@ import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava.nbio.core.sequence.io.FastaReader;
 import org.biojava.nbio.core.sequence.io.GenericFastaHeaderParser;
 import org.biojava.nbio.core.sequence.io.ProteinSequenceCreator;
-import org.biojava.nbio.core.util.InputStreamProvider_Edvino2;
+import org.biojava.nbio.core.util.InputStreamProvider;
 
 import java.io.InputStream;
 import java.util.LinkedHashMap;
@@ -27,7 +27,7 @@ public class ParseFastaFile {
 
 
         // automatically uncompress files using InputStreamProvider
-        InputStreamProvider_Edvino2 isp = new InputStreamProvider_Edvino2();
+        InputStreamProvider isp = new InputStreamProvider();
 
         try (InputStream inStream = isp.getInputStream(is)) {
 

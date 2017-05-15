@@ -22,7 +22,16 @@
  */
 package org.biojava.nbio.core.util;
 
-import java.io.*;
+import android.net.Uri;
+
+import org.biojava.MyApplication;
+
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
@@ -121,7 +130,6 @@ public class InputStreamProvider {
 
 		int magic = 0;
 
-
 		InputStream inStream = u.openStream();
 		magic = getMagicNumber(inStream);
 		inStream.close();
@@ -145,7 +153,39 @@ public class InputStreamProvider {
 
 	}
 
+//Todo Edvino pakeista------------------------------------
+	public InputStream getInputStream(Uri uri) throws IOException {
 
+		int magic = 0;
+
+		try (InputStream fileInputsteam = MyApplication.getAppContext().getContentResolver().openInputStream(uri)) {
+			magic = getMagicNumber(fileInputsteam);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		InputStream fileInputstream;
+
+		if (magic == UncompressInputStream.LZW_MAGIC ) {
+			// a Z compressed file
+			fileInputstream = openCompressedURL(uri);
+		} else if (magic == GZIP_MAGIC ) {
+			fileInputstream = openGZIPURL(uri);
+		} else if ( uri.getPath().endsWith(".gz")) {
+			fileInputstream = openGZIPURL(uri);
+		} else if ( uri.getPath().endsWith(".Z")) {
+			// unix compressed
+			return openCompressedURL(uri);
+		} else {
+			fileInputstream = MyApplication.getAppContext().getContentResolver().openInputStream(uri);
+		}
+
+		return  fileInputstream;
+	}
+
+//-----------------------------------------------------------------------------------------------
 	/**
 	 * Get an InputStream for the file.
 	 * The caller is responsible for closing the stream or otherwise
@@ -291,6 +331,22 @@ public class InputStreamProvider {
 
 		InputStream is      = u.openStream();
 		InputStream inputStream = new GZIPInputStream(is);
+		return inputStream;
+	}
+
+	private InputStream openGZIPURL(Uri uri)
+			throws IOException{
+
+		InputStream is = MyApplication.getAppContext().getContentResolver().openInputStream(uri);
+		InputStream inputStream = new GZIPInputStream(is);
+		return inputStream;
+	}
+
+	private InputStream openCompressedURL(Uri uri)
+			throws IOException{
+
+		InputStream is = MyApplication.getAppContext().getContentResolver().openInputStream(uri);
+		InputStream inputStream =  new UncompressInputStream(is);
 		return inputStream;
 	}
 }
