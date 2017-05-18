@@ -115,21 +115,11 @@ public class ClasspathResource {
 		//pakeiciau source direktorija, nes androidas turi savo specifine!!!!!!!!!!!!!!!!!!!!!!!!
 //		final InputStream classpathIs = getClass().getClassLoader().getResourceAsStream(location);//senoji direktorija
 
-//-------------test-------------------------
-////		InputStream classpathIs = MyApplication.getAppContext().getResources().openRawResource(R.raw.iupac2);
-//		String resource = "/home/edvinas/AndroidStudioProjects/Biojava/app/build/intermediates/sourceFolderJavaResources/test/debug/core/search/io/blast/small-blastreport.blastxml";
-//
-//		final InputStream classpathIs = this.getClass().getResourceAsStream(url);//nauja lokacija
-////		final InputStream classpathIs = this.getClass().getClassLoader().getResourceAsStream(location);//nauja lokacija
-//		InputStream classpathIs = MyApplication.getAppContext().getResources().openRawResource(R.raw.iupac2);
-//----------------test end----------------------
-
-//		InputStream classpathIs = MyApplication.getAppContext().getResources().openRawResource(R.raw.iupac2);
-
+//Todo Edvino pakeista
 		InputStream classpathIs = null;
 		try {
 			classpathIs = MyApplication.getAppContext().getAssets().open(location);
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 //--------------------------------------------------
