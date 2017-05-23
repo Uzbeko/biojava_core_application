@@ -1,5 +1,6 @@
 package org.biojava.coreapp;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,9 @@ import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava.nbio.core.sequence.io.FastaReader;
 import org.biojava.nbio.core.sequence.io.GenericFastaHeaderParser;
 import org.biojava.nbio.core.sequence.io.ProteinSequenceCreator;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,8 +46,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//---------------------------------------------------------------------
+        ActivityManager.RunningAppProcessInfo info = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(info);
+//        final InputStream classpathIs = getClass().getClassLoader().getResourceAsStream("org/biojava/nbio/core/sequence/iupac.txt");//senoji direktorij
+//        XmlPullParserFactory factory = null;
+//        try {
+//            factory = XmlPullParserFactory.newInstance();
+//            XmlPullParser parser = factory.newPullParser();
+//        } catch (XmlPullParserException e) {
+//            e.printStackTrace();
+//        }
 
 
+        Log.e(LOG, System.getProperty("os.name"));
 //---------------------test
         String resource = "org/biojava/nbio/core/sequence/kelios_sekos.fasta";
         long timeS = System.currentTimeMillis();

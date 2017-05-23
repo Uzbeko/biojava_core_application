@@ -77,7 +77,6 @@ public class BlastXMLParser implements ResultFactory_V2 {
 		fileInputStream = is;
 	}
 
-	//Todo reiketu interfeisa pekeisti (ResultFactory)
 
 	private void readFile(String blastFile) throws IOException, ParseException{
 //		logger.info("Start reading " + blastFile);
@@ -280,5 +279,3 @@ public class BlastXMLParser implements ResultFactory_V2 {
 		throw new UnsupportedOperationException("This parser does not support writing yet.");
 	}
 }
-
-

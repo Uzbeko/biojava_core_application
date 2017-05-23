@@ -44,9 +44,9 @@ import static org.junit.Assert.*;
  * @author Paolo Pavan
  */
 @RunWith(AndroidJUnit4.class)
-public class SearchIOTest {
+public class SearchIOstreamTest {
 
-	public SearchIOTest() {
+	public SearchIOstreamTest() {
 	}
 
 	@BeforeClass
@@ -105,9 +105,9 @@ public class SearchIOTest {
         }
 
         ResultFactory_V2 blastResultFactory = new BlastXMLParser();
-        final SearchIO instance;
+        final SearchIOstream instance;
         try {
-            instance = new SearchIO(is, blastResultFactory);
+            instance = new SearchIOstream(is, blastResultFactory);
         } catch (Exception e) {
             fail("test failed:\n"+e.getMessage());
         }
@@ -129,9 +129,9 @@ public class SearchIOTest {
         }
 
         ResultFactory_V2 blastResultFactory = new BlastXMLParser();
-		final SearchIO instance;
+		final SearchIOstream instance;
 		try {
-			instance = new SearchIO(is, blastResultFactory, 10e-10);
+			instance = new SearchIOstream(is, blastResultFactory, 10e-10);
 		} catch (Exception e) {
 			fail("test failed:\n"+e.getMessage());
 		}

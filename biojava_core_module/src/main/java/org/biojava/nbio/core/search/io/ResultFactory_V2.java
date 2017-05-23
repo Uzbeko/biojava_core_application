@@ -30,14 +30,10 @@ import java.text.ParseException;
 import java.util.List;
 
 /**
- * Designed by Paolo Pavan.
- * You may want to find my contacts on Github and LinkedIn for code info
- * or discuss major changes.
- * https://github.com/paolopavan
- *
- * @author Paolo Pavan
+ *Edvino pakeitimas
+ * praplėstas ResultFactory interfeisas
  */
 
 public interface ResultFactory_V2 extends ResultFactory {
-	void setStream(InputStream is);																	//Edvino pakeitimas
+	void setStream(InputStream is);
 }

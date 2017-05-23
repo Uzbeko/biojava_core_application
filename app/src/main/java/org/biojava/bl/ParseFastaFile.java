@@ -38,30 +38,12 @@ public class ParseFastaFile {
 
             sequences = fastaReader.process();
             inStream.close();
-//-----------------------------------------------------------------------------start
 
-
-//            int nrSeq = 0;
-//
-//            while ((b = fastaReader.process(100)) != null) {
-//                for (String key : b.keySet()) {
-//                    nrSeq++;
-//                    Log.d(LOG, nrSeq + " : " + key + " " + b.get(key));
-//                    if ( nrSeq % 100000 == 0)
-//                        System.out.println(nrSeq );
-//                }
-//
-//            }
-//            long timeE = System.currentTimeMillis();
-//
-//            Log.d(LOG,"parsed a total of " + nrSeq + " TREMBL sequences! in " + (timeE - timeS));
         } catch (Exception ex) {
             ex.printStackTrace();
 //        Logger.getLogger(ParseFastaFileDemo.class.getName()).log(Level.SEVERE, null, ex);
         }
-//-----------------------------------------------------------------------------end
         return sequences;
     }
-
 
 }
