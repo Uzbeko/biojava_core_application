@@ -20,15 +20,14 @@
  */
 package org.biojava.nbio.core.alignment.matrices;
 
+import android.util.Log;
+
 import org.biojava.MyApplication;
 import org.biojava.nbio.core.alignment.template.SubstitutionMatrix;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Map;
 
 /** The default provider for AAINDEX loads substitution matrices from the AAINDEX file in the resources directory
@@ -38,7 +37,7 @@ import java.util.Map;
  */
 public class DefaultAAIndexProvider implements AAIndexProvider {
 
-//	private final static Logger logger = LoggerFactory.getLogger(DefaultAAIndexProvider.class);
+    public static final String LOG = DefaultAAIndexProvider.class.getSimpleName();
 
 	Map<String,SubstitutionMatrix<AminoAcidCompound>> matrices;
 
@@ -52,7 +51,6 @@ public class DefaultAAIndexProvider implements AAIndexProvider {
 		try {
 			parser.parse(inStream);
 		} catch (IOException e){
-//			logger.error("Exception: ", e);
 		}
 
 		matrices = parser.getMatrices();

@@ -21,16 +21,15 @@
 package org.biojava.nbio.core.sequence.io;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.DataSource;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
-import org.biojava.nbio.core.sequence.io.GenericFastaHeaderParser;
 import org.junit.*;
 import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+
 
 //TODO sutvarkyti logerius
 
@@ -43,7 +42,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class GenericFastaHeaderParserTest {
 
-//	private final static Logger logger = LoggerFactory.getLogger(GenericFastaHeaderParserTest.class);
+	public static final String LOG = GenericFastaHeaderParserTest.class.getSimpleName();
 
 	public GenericFastaHeaderParserTest() {
 	}
@@ -84,7 +83,7 @@ public class GenericFastaHeaderParserTest {
 	 */
 	@Test
 	public void testParseHeader() throws CompoundNotFoundException {
-//		logger.info("parseHeader");
+		Log.i(LOG, "parseHeader");
 		String header = "";
 		ProteinSequence sequence = new ProteinSequence("");
 		GenericFastaHeaderParser<ProteinSequence,AminoAcidCompound> instance = new GenericFastaHeaderParser<ProteinSequence,AminoAcidCompound>();

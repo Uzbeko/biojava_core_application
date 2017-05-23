@@ -21,14 +21,14 @@
  */
 package org.biojava.nbio.core.sequence.io;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava.nbio.core.sequence.io.template.FastaHeaderFormatInterface;
 import org.biojava.nbio.core.sequence.template.Compound;
 import org.biojava.nbio.core.sequence.template.Sequence;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
@@ -48,7 +48,7 @@ import java.util.LinkedHashMap;
  */
 public class FastaWriter<S extends Sequence<?>, C extends Compound> {
 
-//	private final static Logger logger = LoggerFactory.getLogger(FastaWriter.class);
+	public static final String LOG = FastaWriter.class.getSimpleName();
 
 	OutputStream os;
 	Collection<S> sequences;
@@ -137,8 +137,7 @@ public class FastaWriter<S extends Sequence<?>, C extends Compound> {
 			LinkedHashMap<String, ProteinSequence> proteinSequences = fastaReader.process();
 			is.close();
 
-
-		  //  logger.debug(proteinSequences);
+		    Log.d(LOG, proteinSequences.toString());
 
 			FileOutputStream fileOutputStream = new FileOutputStream("/Users/Scooter/scripps/dyadic/c1-454Scaffolds_temp.faa");
 
@@ -148,13 +147,13 @@ public class FastaWriter<S extends Sequence<?>, C extends Compound> {
 			fastaWriter.process();
 			bo.close();
 			long end = System.currentTimeMillis();
-//			logger.info("Took {} seconds", (end - start));
+			Log.i(LOG, "Took "+(end - start)+" seconds");
 
 			fileOutputStream.close();
 
 
 		} catch (IOException e) {
-//			logger.warn("Exception: ", e);
+			Log.w(LOG, "Exception: ", e);
 		}
 	}
 

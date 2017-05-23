@@ -20,20 +20,18 @@
  */
 package org.biojava.nbio.core.sequence.location;
 
-import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import java.util.Arrays;
 import java.util.Collection;
 import org.biojava.nbio.core.sequence.DataSource;
-import org.biojava.nbio.core.sequence.location.InsdcParser;
 import org.biojava.nbio.core.sequence.location.template.Location;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//TODO sutvarkyti logerius
+
+
 /**
  *
  * @author Jacek Grzebyta
@@ -41,7 +39,8 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class InsdcParserTest {
 
-//	private Logger log = LoggerFactory.getLogger(getClass());
+	public static final String LOG = InsdcParserTest.class.getSimpleName();
+
 	private String data;
 	private String expected;
 
@@ -65,14 +64,14 @@ public class InsdcParserTest {
 	 */
 	@Test
 	public void extractAccessionTest() throws Exception {
-//		log.info("test accession");
+		Log.i(LOG,"test accession");
 //		log.debug("data: '{}'   expected: '{}'", data, expected);
 
 		InsdcParser parser = new InsdcParser(DataSource.GENBANK);
 		Location loc = parser.parse(data);
 
 		if (!loc.isComplex()) {
-//			log.info("simple location: {}", data);
+			Log.i(LOG,"simple location: {}; "+ data);
 //			log.debug("\taccession: '{}'  expected: '{}'", loc.getAccession().getID(), expected);
 			Assert.assertEquals(expected, loc.getAccession().getID());
 		}

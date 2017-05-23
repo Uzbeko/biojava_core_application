@@ -24,6 +24,8 @@
  */
 package org.biojava.nbio.core.sequence.loader;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.AccessionID;
 import org.biojava.nbio.core.sequence.DNASequence;
@@ -38,8 +40,6 @@ import org.biojava.nbio.core.sequence.io.GenericGenbankHeaderParser;
 import org.biojava.nbio.core.sequence.template.AbstractSequence;
 import org.biojava.nbio.core.sequence.template.Compound;
 import org.biojava.nbio.core.sequence.template.CompoundSet;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URL;
@@ -54,7 +54,8 @@ import java.util.LinkedHashMap;
  */
 public class GenbankProxySequenceReader<C extends Compound> extends StringProxySequenceReader<C> implements FeaturesKeyWordInterface, DatabaseReferenceInterface, FeatureRetriever {
 
-//	private final static Logger logger = LoggerFactory.getLogger(GenbankProxySequenceReader.class);
+	public static final String LOG = GenbankProxySequenceReader.class.getSimpleName();
+
 
 	private static final String eutilBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"; //
 	private String genbankDirectoryCache = null;
@@ -90,7 +91,7 @@ public class GenbankProxySequenceReader<C extends Compound> extends StringProxyS
 
 		if (compoundSet.getClass().equals(AminoAcidCompoundSet.class)) {
 			if (!genbankParser.getCompoundType().equals(compoundSet)) {
-//				logger.error("Declared compount type {} does not mach the real: {}", genbankParser.getCompoundType().toString(), compoundSet.toString());
+				Log.e(LOG,"Declared compount type "+genbankParser.getCompoundType().toString()+" does not mach the real: "+ compoundSet.toString());
 				throw new IOException("Wrong declared compound type for: " + accessionID);
 			}
 		}
@@ -103,7 +104,7 @@ public class GenbankProxySequenceReader<C extends Compound> extends StringProxyS
 		if (genbankDirectoryCache != null && genbankDirectoryCache.length() > 0) {
 			File f = new File(genbankDirectoryCache + File.separatorChar + accessionID + ".gb");
 			if (f.exists()) {
-//				logger.debug("Reading: {}", f.toString());
+				Log.d(LOG,"Reading: "+ f.toString());
 				inStream = new BufferedInputStream(new FileInputStream(f));
 			} else {
 				InputStream in = getEutilsInputStream(accessionID, db);
@@ -135,7 +136,7 @@ public class GenbankProxySequenceReader<C extends Compound> extends StringProxyS
 
 	private InputStream getEutilsInputStream(String accessionID, String db) throws IOException {
 		String genbankURL = eutilBaseURL + "efetch.fcgi?db=" + db + "&id=" + accessionID + "&rettype=gb&retmode=text";
-//		logger.trace("Loading: {}", genbankURL);
+		Log.i(LOG, "Loading: "+ genbankURL);
 		URL genbank = new URL(genbankURL);
 		URLConnection genbankConnection = genbank.openConnection();
 		return genbankConnection.getInputStream();
@@ -191,9 +192,9 @@ public class GenbankProxySequenceReader<C extends Compound> extends StringProxyS
 				= new GenbankProxySequenceReader<AminoAcidCompound>("/tmp", "NP_000257", AminoAcidCompoundSet.getAminoAcidCompoundSet());
 		ProteinSequence proteinSequence = new ProteinSequence(genbankProteinReader);
 		genbankProteinReader.getHeaderParser().parseHeader(genbankProteinReader.getHeader(), proteinSequence);
-//		logger.info("Sequence ({},{})={}...", proteinSequence.getAccession(), proteinSequence.getLength(), proteinSequence.getSequenceAsString().substring(0, 10));
-//		logger.info("Keywords: {}", genbankProteinReader.getKeyWords());
-//		logger.info("DatabaseReferences: {}", genbankProteinReader.getDatabaseReferences());
+		Log.d(LOG,"Sequence ("+proteinSequence.getAccession()+","+proteinSequence.getLength()+")="+proteinSequence.getSequenceAsString().substring(0, 10)+"...");
+		Log.d(LOG,"Keywords: "+ genbankProteinReader.getKeyWords());
+		Log.d(LOG,"DatabaseReferences: "+ genbankProteinReader.getDatabaseReferences());
 		proteinSequence.getFeatures();
 
 		GenbankProxySequenceReader<NucleotideCompound> genbankDNAReader
@@ -201,57 +202,57 @@ public class GenbankProxySequenceReader<C extends Compound> extends StringProxyS
 		DNASequence dnaSequence = new DNASequence(genbankDNAReader);
 		genbankDNAReader.getHeaderParser().parseHeader(genbankDNAReader.getHeader(), dnaSequence);
 		dnaSequence.setAccession(new AccessionID("NM_001126"));
-//		logger.info("Sequence ({},{})={}...", dnaSequence.getAccession(), dnaSequence.getLength(), dnaSequence.getSequenceAsString().substring(0, 10));
-//		logger.info("Keywords: {}", genbankDNAReader.getKeyWords());
-//		logger.info("DatabaseReferences: {}", genbankDNAReader.getDatabaseReferences());
+		Log.d(LOG,"Sequence ("+dnaSequence.getAccession()+","+dnaSequence.getLength()+")="+dnaSequence.getSequenceAsString().substring(0, 10)+"...");
+		Log.d(LOG,"Keywords: "+ genbankDNAReader.getKeyWords());
+		Log.d(LOG,"DatabaseReferences: "+ genbankDNAReader.getDatabaseReferences());
 
 		genbankDNAReader
 				= new GenbankProxySequenceReader<NucleotideCompound>("/tmp", "NM_000266", DNACompoundSet.getDNACompoundSet());
 		dnaSequence = new DNASequence(genbankDNAReader);
 		genbankDNAReader.getHeaderParser().parseHeader(genbankDNAReader.getHeader(), dnaSequence);
-//		logger.info("Sequence ({},{})={}...", dnaSequence.getAccession(), dnaSequence.getLength(), dnaSequence.getSequenceAsString().substring(0, 10));
-//		logger.info("Keywords: {}", genbankDNAReader.getKeyWords());
-//		logger.info("DatabaseReferences: {}", genbankDNAReader.getDatabaseReferences());
+		Log.d(LOG,"Sequence ("+dnaSequence.getAccession()+","+dnaSequence.getLength()+")="+dnaSequence.getSequenceAsString().substring(0, 10)+"...");
+		Log.d(LOG,"Keywords: "+ genbankDNAReader.getKeyWords());
+		Log.d(LOG,"DatabaseReferences: "+ genbankDNAReader.getDatabaseReferences());
 
 		genbankDNAReader
 				= new GenbankProxySequenceReader<NucleotideCompound>("/tmp", "AV254721", DNACompoundSet.getDNACompoundSet());
 		dnaSequence = new DNASequence(genbankDNAReader);
 		genbankDNAReader.getHeaderParser().parseHeader(genbankDNAReader.getHeader(), dnaSequence);
-//		logger.info("Sequence ({},{})={}...", dnaSequence.getAccession(), dnaSequence.getLength(), dnaSequence.getSequenceAsString().substring(0, 10));
-//		logger.info("Keywords: {}", genbankDNAReader.getKeyWords());
-//		logger.info("DatabaseReferences: {}", genbankDNAReader.getDatabaseReferences());
+		Log.d(LOG,"Sequence ("+dnaSequence.getAccession()+","+dnaSequence.getLength()+")="+dnaSequence.getSequenceAsString().substring(0, 10)+"...");
+		Log.d(LOG,"Keywords: "+ genbankDNAReader.getKeyWords());
+		Log.d(LOG,"DatabaseReferences: "+ genbankDNAReader.getDatabaseReferences());
 
 		genbankDNAReader
 				= new GenbankProxySequenceReader<NucleotideCompound>("/tmp", "AV254721.2", DNACompoundSet.getDNACompoundSet());
 		dnaSequence = new DNASequence(genbankDNAReader);
 		genbankDNAReader.getHeaderParser().parseHeader(genbankDNAReader.getHeader(), dnaSequence);
-//		logger.info("Sequence ({},{})={}...", dnaSequence.getAccession(), dnaSequence.getLength(), dnaSequence.getSequenceAsString().substring(0, 10));
-//		logger.info("Keywords: {}", genbankDNAReader.getKeyWords());
-//		logger.info("DatabaseReferences: {}", genbankDNAReader.getDatabaseReferences());
+		Log.d(LOG,"Sequence ("+dnaSequence.getAccession()+","+dnaSequence.getLength()+")="+dnaSequence.getSequenceAsString().substring(0, 10)+"...");
+		Log.d(LOG,"Keywords: "+ genbankDNAReader.getKeyWords());
+		Log.d(LOG,"DatabaseReferences: "+ genbankDNAReader.getDatabaseReferences());
 
 		genbankDNAReader
 				= new GenbankProxySequenceReader<NucleotideCompound>("/tmp", "U49845", DNACompoundSet.getDNACompoundSet());
 		dnaSequence = new DNASequence(genbankDNAReader);
 		genbankDNAReader.getHeaderParser().parseHeader(genbankDNAReader.getHeader(), dnaSequence);
-//		logger.info("Sequence ({},{})={}...", dnaSequence.getAccession(), dnaSequence.getLength(), dnaSequence.getSequenceAsString().substring(0, 10));
-//		logger.info("Keywords: {}", genbankDNAReader.getKeyWords());
-//		logger.info("DatabaseReferences: {}", genbankDNAReader.getDatabaseReferences());
+		Log.d(LOG,"Sequence ("+dnaSequence.getAccession()+","+dnaSequence.getLength()+")="+dnaSequence.getSequenceAsString().substring(0, 10)+"...");
+		Log.d(LOG,"Keywords: "+ genbankDNAReader.getKeyWords());
+		Log.d(LOG,"DatabaseReferences: "+ genbankDNAReader.getDatabaseReferences());
 
 		genbankDNAReader
 				= new GenbankProxySequenceReader<NucleotideCompound>("/tmp", "GI:1293613", DNACompoundSet.getDNACompoundSet());
 		dnaSequence = new DNASequence(genbankDNAReader);
 		genbankDNAReader.getHeaderParser().parseHeader(genbankDNAReader.getHeader(), dnaSequence);
-//		logger.info("Sequence ({},{})={}...", dnaSequence.getAccession(), dnaSequence.getLength(), dnaSequence.getSequenceAsString().substring(0, 10));
-//		logger.info("Keywords: {}", genbankDNAReader.getKeyWords());
-//		logger.info("DatabaseReferences: {}", genbankDNAReader.getDatabaseReferences());
+		Log.d(LOG,"Sequence ("+dnaSequence.getAccession()+","+dnaSequence.getLength()+")="+dnaSequence.getSequenceAsString().substring(0, 10)+"...");
+		Log.d(LOG,"Keywords: "+ genbankDNAReader.getKeyWords());
+		Log.d(LOG,"DatabaseReferences: "+ genbankDNAReader.getDatabaseReferences());
 
 		genbankDNAReader
 				= new GenbankProxySequenceReader<NucleotideCompound>("/tmp", "14109166", DNACompoundSet.getDNACompoundSet());
 		dnaSequence = new DNASequence(genbankDNAReader);
 		genbankDNAReader.getHeaderParser().parseHeader(genbankDNAReader.getHeader(), dnaSequence);
-//		logger.info("Sequence ({},{})={}...", dnaSequence.getAccession(), dnaSequence.getLength(), dnaSequence.getSequenceAsString().substring(0, 10));
-//		logger.info("Keywords: {}", genbankDNAReader.getKeyWords());
-//		logger.info("DatabaseReferences: {}", genbankDNAReader.getDatabaseReferences());
+		Log.d(LOG,"Sequence ("+dnaSequence.getAccession()+","+dnaSequence.getLength()+")="+dnaSequence.getSequenceAsString().substring(0, 10)+"...");
+		Log.d(LOG,"Keywords: "+ genbankDNAReader.getKeyWords());
+		Log.d(LOG,"DatabaseReferences: "+ genbankDNAReader.getDatabaseReferences());
 
 		/*
 		 GenbankProxySequenceReader genbankProxyReader = new GenbankProxySequenceReader("/tmp");

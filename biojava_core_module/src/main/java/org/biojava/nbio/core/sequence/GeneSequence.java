@@ -22,12 +22,12 @@
  */
 package org.biojava.nbio.core.sequence;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.template.CompoundSet;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +39,7 @@ import java.util.LinkedHashMap;
  */
 public class GeneSequence extends DNASequence {
 
-//	private final static Logger logger = LoggerFactory.getLogger(GeneSequence.class);
+	public static final String LOG = GeneSequence.class.getSimpleName();
 
 	private final LinkedHashMap<String, TranscriptSequence> transcriptSequenceHashMap = new LinkedHashMap<String, TranscriptSequence>();
 	private final LinkedHashMap<String, IntronSequence> intronSequenceHashMap = new LinkedHashMap<String, IntronSequence>();
@@ -243,7 +243,7 @@ public class GeneSequence extends DNASequence {
 				try{
 					addIntronsUsingExons();
 				} catch(Exception e){
-//					logger.error("Remove Exon validate() error " + e.getMessage());
+					Log.e(LOG,"Remove Exon validate() error " + e.getMessage());
 				}
 				return exonSequence;
 			}
@@ -309,7 +309,7 @@ public class GeneSequence extends DNASequence {
 			dnaSequence = new DNASequence(sequence.toUpperCase());
 		} catch (CompoundNotFoundException e) {
 			// this should not happen, the sequence is DNA originally, if it does, there's a bug somewhere
-//			logger.error("Could not create new DNA sequence in getSequence5PrimeTo3Prime(). Error: {}",e.getMessage());
+			Log.e(LOG,"Could not create new DNA sequence in getSequence5PrimeTo3Prime(). Error: "+ e.getMessage());
 		}
 		dnaSequence.setAccession(new AccessionID(this.getAccession().getID()));
 		return dnaSequence;

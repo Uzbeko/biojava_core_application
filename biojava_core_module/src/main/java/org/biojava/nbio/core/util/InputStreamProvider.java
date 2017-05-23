@@ -40,9 +40,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-
 
 /** A class that provides an InputStream from a File. The file can be compressed or uncompressed.
  *
@@ -64,7 +61,7 @@ import java.util.zip.ZipFile;
  */
 public class InputStreamProvider {
 
-	//private final static Logger logger = LoggerFactory.getLogger(InputStreamProvider.class);
+	public static final String LOG = InputStreamProvider.class.getSimpleName();
 
 	/**
 	 * The magic number found at the start of a GZIP stream.

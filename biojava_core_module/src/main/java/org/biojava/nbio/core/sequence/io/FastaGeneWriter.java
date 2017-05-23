@@ -22,11 +22,11 @@
 
 package org.biojava.nbio.core.sequence.io;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.sequence.*;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.io.template.FastaHeaderFormatInterface;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ import java.util.Collection;
  */
 public class FastaGeneWriter {
 
-//	private final static Logger logger = LoggerFactory.getLogger(FastaGeneWriter.class);
+	public static final String LOG = FastaGeneWriter.class.getSimpleName();
 
 	boolean showExonUppercase = false;
 	OutputStream os;
@@ -105,7 +105,7 @@ public class FastaGeneWriter {
 						featureBioEnd = geneBioEnd - exonSequence.getBioBegin();
 					}
 					if (featureBioBegin < 0 || featureBioEnd < 0 || featureBioEnd > sb.length() || featureBioBegin > sb.length()) {
-//						logger.warn("Bad Feature, Accession: {}, Sequence Strand: {}, Gene Begin: {}, Gene End: {}, Exon Begin: {}, Exon End: {}", sequence.getAccession().toString(), sequence.getStrand(), geneBioBegin, geneBioEnd, exonSequence.getBioBegin(), exonSequence.getBioEnd());
+						Log.w(LOG,"Bad Feature, Accession: "+ sequence.getAccession().toString()+ ", Sequence Strand: "+sequence.getStrand()+", Gene Begin: "+geneBioBegin+", Gene End: "+geneBioEnd+", Exon Begin: "+exonSequence.getBioBegin()+", Exon End: "+exonSequence.getBioEnd());
 					} else {
 						for (int i = featureBioBegin; i <= featureBioEnd; i++) {
 							char ch = sb.charAt(i);
@@ -175,7 +175,7 @@ public class FastaGeneWriter {
 
 
 		} catch (Exception e) {
-//			logger.warn("Exception: ", e);
+			Log.w(LOG,"Exception: ", e);
 		}
 	}
 }

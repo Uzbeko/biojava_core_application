@@ -21,6 +21,7 @@
 package org.biojava.nbio.core.sequence.io;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -40,10 +41,6 @@ import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.features.FeatureInterface;
 import org.biojava.nbio.core.sequence.features.Qualifier;
-import org.biojava.nbio.core.sequence.io.DNASequenceCreator;
-import org.biojava.nbio.core.sequence.io.GenbankReader;
-import org.biojava.nbio.core.sequence.io.GenericGenbankHeaderParser;
-import org.biojava.nbio.core.sequence.io.ProteinSequenceCreator;
 import org.biojava.nbio.core.sequence.template.AbstractSequence;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -52,10 +49,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-
-//TODO sutvarkyti  Loggerius
 
 /**
  *
@@ -65,7 +58,7 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class GenbankReaderTest {
 
-//	private final static Logger logger = LoggerFactory.getLogger(GenbankReaderTest.class);
+	public static final String LOG = GenbankReaderTest.class.getSimpleName();
 
 	public GenbankReaderTest() {
 	}
@@ -92,7 +85,7 @@ public class GenbankReaderTest {
 	@Test
 	public void testProcess() throws Exception {
 
-//		logger.info("process protein");
+		Log.i(LOG, "process protein");
         //pakeiciau source direktorija, nes androidas turi savo specifine!!!!!!!!!!!!!!!!!!!!!!!!
 //        InputStream inStream = this.getClass().getResourceAsStream("/BondFeature.gb");//senoji direktorija
 
@@ -118,7 +111,7 @@ public class GenbankReaderTest {
 		LinkedHashMap<String, ProteinSequence> proteinSequences = GenbankProtein.process();
 		inStream.close();
 
-//		logger.info("process DNA");
+		Log.i(LOG, "process DNA");
 //		inStream = this.getClass().getResourceAsStream("/NM_000266.gb"); senoji direktorija
 
 		//-----------------------------Edvino pakeista
@@ -146,7 +139,7 @@ public class GenbankReaderTest {
 
 	@Test
 	public void CDStest() throws Exception {
-//		logger.info("CDS Test");
+		Log.i(LOG, "CDS Test");
 
 //		InputStream inStream = this.getClass().getResourceAsStream("/BondFeature.gb"); senoji direktorija
 
@@ -172,7 +165,7 @@ public class GenbankReaderTest {
 
 
 		Assert.assertTrue(proteinSequences.size() == 1);
-//		logger.debug("protein sequences: {}", proteinSequences);
+		Log.d(LOG, "protein sequences: "+ proteinSequences);
 
 		ProteinSequence protein = new ArrayList<ProteinSequence>(proteinSequences.values()).get(0);
 

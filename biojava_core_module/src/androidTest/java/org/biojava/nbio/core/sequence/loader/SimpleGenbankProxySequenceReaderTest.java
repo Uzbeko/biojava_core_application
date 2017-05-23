@@ -21,16 +21,14 @@
 package org.biojava.nbio.core.sequence.loader;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import java.io.IOException;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
-import org.biojava.nbio.core.sequence.loader.GenbankProxySequenceReader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 
 /**
@@ -44,11 +42,11 @@ import org.junit.runner.RunWith;
 public class SimpleGenbankProxySequenceReaderTest {
 
 
-//	private final static Logger logger = LoggerFactory.getLogger(SimpleGenbankProxySequenceReaderTest.class);
+	public static final String LOG = SimpleGenbankProxySequenceReaderTest.class.getSimpleName();
 
 	@Test(expected = IOException.class)
 	public void testWrongSequence() throws Exception {
-//		logger.info("test wrong sequence");
+		Log.i(LOG, "test wrong sequence");
 
 		String wrongGi = "34567";
 

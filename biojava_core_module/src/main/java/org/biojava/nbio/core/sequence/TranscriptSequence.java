@@ -22,11 +22,11 @@
  */
 package org.biojava.nbio.core.sequence;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
 import org.biojava.nbio.core.sequence.transcription.TranscriptionEngine;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +39,7 @@ import java.util.LinkedHashMap;
  */
 public class TranscriptSequence extends DNASequence {
 
-//	private final static Logger logger = LoggerFactory.getLogger(TranscriptSequence.class);
+	public static final String LOG = TranscriptSequence.class.getSimpleName();
 
 	private final ArrayList<CDSSequence> cdsSequenceList = new ArrayList<CDSSequence>();
 	private final LinkedHashMap<String, CDSSequence> cdsSequenceHashMap = new LinkedHashMap<String, CDSSequence>();
@@ -141,7 +141,7 @@ public class TranscriptSequence extends DNASequence {
 		for (int i = 0; i < cdsSequenceList.size(); i++) {
 			CDSSequence cdsSequence = cdsSequenceList.get(i);
 			String codingSequence = cdsSequence.getCodingSequence();
-			//          logger.debug("CDS {} {} = {}", getStrand(), cdsSequence.getPhase(), codingSequence);
+			          Log.d(LOG,"CDS "+getStrand()+" "+cdsSequence.getPhase()+" = "+codingSequence);
 			if (this.getStrand() == Strand.NEGATIVE) {
 				if (cdsSequence.phase == 1) {
 					codingSequence = codingSequence.substring(1, codingSequence.length());
@@ -177,14 +177,14 @@ public class TranscriptSequence extends DNASequence {
 			}
 
 
-			//    logger.debug("Coding Sequence: {}", codingSequence);
+			    Log.d(LOG,"Coding Sequence: "+ codingSequence);
 
 			DNASequence dnaCodingSequence = null;
 			try {
 				dnaCodingSequence = new DNASequence(codingSequence.toUpperCase());
 			} catch (CompoundNotFoundException e) {
 				// if I understand this should not happen, please correct if I'm wrong - JD 2014-10-24
-//				logger.error("Could not create DNA coding sequence, {}. This is most likely a bug.", e.getMessage());
+				Log.d(LOG,"Could not create DNA coding sequence, "+e.getMessage()+". This is most likely a bug.");
 			}
 			RNASequence rnaCodingSequence = dnaCodingSequence.getRNASequence(TranscriptionEngine.getDefault());
 			ProteinSequence proteinSequence = rnaCodingSequence.getProteinSequence(TranscriptionEngine.getDefault());
@@ -210,7 +210,7 @@ public class TranscriptSequence extends DNASequence {
 			dnaSequence = new DNASequence(sb.toString().toUpperCase());
 		} catch (CompoundNotFoundException e) {
 			// if I understand this should not happen, please correct if I'm wrong - JD 2014-10-24
-//			logger.error("Could not create DNA coding sequence, {}. This is most likely a bug.", e.getMessage());
+			Log.d(LOG,"Could not create DNA coding sequence, "+e.getMessage()+". This is most likely a bug.");
 		}
 		dnaSequence.setAccession(new AccessionID(this.getAccession().getID()));
 		return dnaSequence;

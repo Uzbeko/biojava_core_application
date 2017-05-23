@@ -1,6 +1,7 @@
 package org.biojava.bl;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
@@ -12,6 +13,7 @@ import org.biojava.nbio.core.util.InputStreamProvider;
 
 import java.io.InputStream;
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
 
 /**
  * Created by edvinas on 17.5.12.
@@ -41,7 +43,7 @@ public class ParseFastaFile {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-//        Logger.getLogger(ParseFastaFileDemo.class.getName()).log(Level.SEVERE, null, ex);
+            Log.e(LOG,"exception", ex);
         }
         return sequences;
     }

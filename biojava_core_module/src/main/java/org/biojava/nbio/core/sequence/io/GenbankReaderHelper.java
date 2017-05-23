@@ -21,6 +21,8 @@
  */
 package org.biojava.nbio.core.sequence.io;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.sequence.DNASequence;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
@@ -28,8 +30,6 @@ import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 import org.biojava.nbio.core.sequence.template.AbstractSequence;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,7 +42,7 @@ import java.util.LinkedHashMap;
  */
 public class GenbankReaderHelper {
 
-//	private final static Logger logger = LoggerFactory.getLogger(GenbankReaderHelper.class);
+	public static final String LOG = GenbankReaderHelper.class.getSimpleName();
 
 	/**
 	 * Selecting lazySequenceLoad=true will parse the Genbank file and figure out the accessionid and offsets and return sequence objects
@@ -165,12 +165,12 @@ public class GenbankReaderHelper {
 
 		LinkedHashMap<String, DNASequence> dnaSequences = GenbankReaderHelper.readGenbankDNASequence(new File("src/test/resources/NM_000266.gb"), true);
 		for (DNASequence sequence : dnaSequences.values()) {
-//			logger.info("DNA Sequence: {}", sequence.getRNASequence().getProteinSequence().getSequenceAsString());
+			Log.i(LOG,"DNA Sequence: {}; " + sequence.getRNASequence().getProteinSequence().getSequenceAsString());
 		}
 
 		LinkedHashMap<String, ProteinSequence> proteinSequences = GenbankReaderHelper.readGenbankProteinSequence(new File("src/test/resources/BondFeature.gb"), true);
 		for (ProteinSequence sequence : proteinSequences.values()) {
-//			logger.info("Protein Sequence: {}", sequence.getSequenceAsString());
+			Log.i(LOG,"Protein Sequence: {}; " + sequence.getSequenceAsString());
 		}
 	}
 }

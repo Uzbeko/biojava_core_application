@@ -22,6 +22,8 @@
  */
 package org.biojava.nbio.core.sequence;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.compound.*;
 import org.biojava.nbio.core.sequence.features.FeatureInterface;
@@ -34,8 +36,6 @@ import org.biojava.nbio.core.sequence.location.template.Location;
 import org.biojava.nbio.core.sequence.template.AbstractSequence;
 import org.biojava.nbio.core.sequence.template.CompoundSet;
 import org.biojava.nbio.core.sequence.template.ProxySequenceReader;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,7 +52,7 @@ import org.biojava.nbio.core.sequence.features.Qualifier;
  */
 public class ProteinSequence extends AbstractSequence<AminoAcidCompound> {
 
-//	private final static Logger logger = LoggerFactory.getLogger(ProteinSequence.class);
+	public static final String LOG = ProteinSequence.class.getSimpleName();
 
 	/*
 	 private ArrayList<FeatureInterface<AbstractSequence<AminoAcidCompound>, AminoAcidCompound>> features
@@ -122,7 +122,7 @@ public class ProteinSequence extends AbstractSequence<AminoAcidCompound> {
 					setParentDNASequence(dnaSeq, location.getStart().getPosition(), location.getEnd().getPosition());
 				} catch (CompoundNotFoundException e) {
 					// TODO is there another solution to handle this exception?
-//					logger.error("Could not add 'coded_by' parent DNA location feature, unrecognised compounds found in DNA sequence: {}", e.getMessage());
+					Log.e(LOG,"Could not add 'coded_by' parent DNA location feature, unrecognised compounds found in DNA sequence: "+ e.getMessage());
 				}
 			}
 		}
@@ -156,7 +156,7 @@ public class ProteinSequence extends AbstractSequence<AminoAcidCompound> {
 		String seqUrlTemplate = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=%s&rettype=fasta&retmode=text";
 		URL url = new URL(String.format(seqUrlTemplate, accessId));
 
-//		logger.trace("Getting parent DNA sequence from URL: {}", url.toString());
+		Log.i(LOG,"Getting parent DNA sequence from URL: "+ url.toString());
 
 		InputStream is = url.openConnection().getInputStream();
 
@@ -183,7 +183,7 @@ public class ProteinSequence extends AbstractSequence<AminoAcidCompound> {
 				return cdna.getSubSequence(rawParent).getSequenceAsString();
 			} catch (IOException e) {
 				// return null
-//				logger.error("Caught IOException when getting DNA sequence for id {}. Error: {}", cdna.getAccession().getID(), e.getMessage());
+				Log.e(LOG,"Caught IOException when getting DNA sequence for id "+cdna.getAccession().getID()+". Error: "+ e.getMessage());
 				return null;
 			}
 		} else {
@@ -201,11 +201,11 @@ public class ProteinSequence extends AbstractSequence<AminoAcidCompound> {
 
 	public static void main(String[] args) throws Exception {
 		ProteinSequence proteinSequence = new ProteinSequence("ARNDCEQGHILKMFPSTWYVBZJX");
-//		logger.info("Protein Sequence: {}", proteinSequence.toString());
+		Log.i(LOG,"Protein Sequence: "+ proteinSequence.toString());
 
 		StringProxySequenceReader<AminoAcidCompound> sequenceStringProxyLoader = new StringProxySequenceReader<AminoAcidCompound>("XRNDCEQGHILKMFPSTWYVBZJA", AminoAcidCompoundSet.getAminoAcidCompoundSet());
 		ProteinSequence proteinSequenceFromProxy = new ProteinSequence(sequenceStringProxyLoader);
-//		logger.info("Protein Sequence from Proxy: {}", proteinSequenceFromProxy.toString());
+		Log.i(LOG,"Protein Sequence from Proxy: "+ proteinSequenceFromProxy.toString());
 
 	}
 }

@@ -23,19 +23,13 @@ import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava.nbio.core.sequence.io.FastaReader;
 import org.biojava.nbio.core.sequence.io.GenericFastaHeaderParser;
 import org.biojava.nbio.core.sequence.io.ProteinSequenceCreator;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             long timeE = System.currentTimeMillis();
             System.out.println("parsed a total of " + nrSeq + " TREMBL sequences! in " + (timeE - timeS));
         } catch (Exception ex) {
-            Logger.getLogger(ParseFastaFileDemo.class.getName()).log(Level.SEVERE, null, ex);
+            Log.e(LOG, "exception", ex);
         }
 
 //----------Buttons-------------------------------------------------------

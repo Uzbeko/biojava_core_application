@@ -19,8 +19,8 @@
 
 package org.biojava.nbio.core.util;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+
+import android.util.Log;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
@@ -35,7 +35,7 @@ import java.util.*;
 
 public class SoftHashMap<K, V> extends AbstractMap<K, V> {
 
-//	private final static Logger logger = LoggerFactory.getLogger(SoftHashMap.class);
+	public static final String LOG = SoftHashMap.class.getSimpleName();
 
 	public static final int DEFAULT_LIMIT = 1;
 
@@ -122,7 +122,7 @@ public V get(Object key) {
 
 				}
 			} catch (Exception e){
-//			 logger.error("Exception: ", e);
+			 Log.e(LOG,"Exception: ", e);
 			}
 
 		}
@@ -213,7 +213,7 @@ public synchronized V put(K key, V value) {
 
 		clearGCCollected();
 
-//		logger.debug("Putting {} on cache. size: {}", key, size());
+		Log.d(LOG,"Putting "+key+" on cache. size: "+size());
 
 		map.put(key, new SoftValue<K, V>(value, key, queue));
 
@@ -226,7 +226,7 @@ public synchronized V put(K key, V value) {
 	@Override
 	public V remove(Object key) {
 		clearGCCollected();
-//		logger.debug("Removing {} from cache. size: {}", key, size());
+		Log.d(LOG,"Removing "+key+" from cache. size: "+size());
 		return map.remove(key).get();
 	}
 
@@ -240,7 +240,7 @@ public void clear() {
 		}
 
 		clearGCCollected();
-//		logger.debug("clearing cache");
+		Log.d(LOG,"clearing cache");
 		map.clear();
 
 	}

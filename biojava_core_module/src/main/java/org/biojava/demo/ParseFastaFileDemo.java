@@ -21,11 +21,11 @@
 package org.biojava.demo;
 
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
@@ -40,6 +40,7 @@ import org.biojava.nbio.core.util.InputStreamProvider;
  */
 public class ParseFastaFileDemo {
 
+	public static final String LOG = ParseFastaFileDemo.class.getSimpleName();
 
 	public ParseFastaFileDemo(){
 
@@ -118,7 +119,7 @@ public class ParseFastaFileDemo {
 				long timeE = System.currentTimeMillis();
 				System.out.println("parsed a total of " + nrSeq + " TREMBL sequences! in " + (timeE - timeS));
 			} catch (Exception ex) {
-				Logger.getLogger(ParseFastaFileDemo.class.getName()).log(Level.SEVERE, null, ex);
+				Log.e(LOG, "exception", ex);
 			}
 		}
 }

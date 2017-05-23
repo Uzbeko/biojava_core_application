@@ -48,8 +48,6 @@ import org.biojava.nbio.core.sequence.location.template.Location;
 import org.biojava.nbio.core.sequence.template.AbstractSequence;
 import org.biojava.nbio.core.sequence.template.Compound;
 import org.biojava.nbio.core.sequence.template.CompoundSet;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,6 +60,8 @@ import java.util.regex.Pattern;
 
 public class GenbankSequenceParser<S extends AbstractSequence<C>, C extends Compound> implements SequenceParserInterface{
 
+	public static final String LOG = GenbankSequenceParser.class.getSimpleName();
+
 	private String seqData = null;
 	private GenericGenbankHeaderParser<S, C> headerParser;
 	private String header;
@@ -73,8 +73,6 @@ public class GenbankSequenceParser<S extends AbstractSequence<C>, C extends Comp
 	 * same genbank Feature) and are provided with location
 	 */
 	private HashMap<String, ArrayList<AbstractFeature>> featureCollection;
-
-//	private Logger log = LoggerFactory.getLogger(getClass());
 
 	// this is a compoundset parsed from header.
 	private CompoundSet<?> compoundType;

@@ -21,6 +21,8 @@
  */
 package org.biojava.nbio.core.sequence.io.util;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.exceptions.ParserException;
 import org.biojava.nbio.core.sequence.compound.AmbiguityDNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.AmbiguityRNACompoundSet;
@@ -29,8 +31,6 @@ import org.biojava.nbio.core.sequence.compound.RNACompoundSet;
 import org.biojava.nbio.core.sequence.template.Compound;
 import org.biojava.nbio.core.sequence.template.CompoundSet;
 import org.biojava.nbio.core.sequence.template.Sequence;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import java.util.zip.GZIPInputStream;
 
 public class IOUtils {
 
-//	private static final Logger logger = LoggerFactory.getLogger(IOUtils.class);
+	public static final String LOG = IOUtils.class.getSimpleName();
 
 	private static final int BUFFER = 4096;
 
@@ -56,7 +56,7 @@ public class IOUtils {
 				c.close();
 			}
 		} catch (IOException e) {
-//			logger.warn("Cannot close down the given Closeable object", e);
+			Log.w(LOG,"Cannot close down the given Closeable object", e);
 		}
 	}
 

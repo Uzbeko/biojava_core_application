@@ -22,6 +22,8 @@
  */
 package org.biojava.nbio.core.sequence;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
@@ -31,8 +33,6 @@ import org.biojava.nbio.core.sequence.transcription.Frame;
 import org.biojava.nbio.core.sequence.transcription.TranscriptionEngine;
 import org.biojava.nbio.core.sequence.views.ComplementSequenceView;
 import org.biojava.nbio.core.sequence.views.ReversedSequenceView;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 /**
  * This is class should model the attributes associated with a DNA sequence
@@ -41,7 +41,7 @@ import org.biojava.nbio.core.sequence.views.ReversedSequenceView;
  */
 public class DNASequence extends AbstractSequence<NucleotideCompound> {
 
-//	private final static Logger logger = LoggerFactory.getLogger(DNASequence.class);
+	public static final String LOG = DNASequence.class.getSimpleName();
 /**
  * The type of DNA sequence
  */
@@ -174,6 +174,6 @@ public class DNASequence extends AbstractSequence<NucleotideCompound> {
 		StringProxySequenceReader<NucleotideCompound> sequenceStringProxyLoader =
 				new StringProxySequenceReader<NucleotideCompound>("GCTA", DNACompoundSet.getDNACompoundSet());
 		DNASequence dnaSequenceFromProxy = new DNASequence(sequenceStringProxyLoader);
-//		logger.info("DNA Sequence from Proxy: {}", dnaSequenceFromProxy.toString());
+		Log.i(LOG, "DNA Sequence from Proxy: {}; " + dnaSequenceFromProxy.toString());
 	}
 }

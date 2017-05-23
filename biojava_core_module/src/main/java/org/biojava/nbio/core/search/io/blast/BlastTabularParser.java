@@ -20,6 +20,8 @@
  */
 package org.biojava.nbio.core.search.io.blast;
 
+import android.util.Log;
+
 import org.biojava.MyApplication;
 import org.biojava.nbio.core.search.io.Hit;
 import org.biojava.nbio.core.search.io.Hsp;
@@ -38,7 +40,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 /**
  * Designed by Paolo Pavan.
@@ -50,6 +51,8 @@ import java.util.logging.Logger;
  */
 
 public class BlastTabularParser implements ResultFactory_V2 {
+	public static final String LOG = BlastTabularParser.class.getSimpleName();
+
 	private final String blastReference =
 			"Zheng Zhang, Scott Schwartz, Lukas Wagner, and Webb Miller (2000), A greedy algorithm for aligning DNA sequences&quot;, J Comput Biol 2000; 7(1-2):203-14.";
 	/**
@@ -63,7 +66,7 @@ public class BlastTabularParser implements ResultFactory_V2 {
 		IMPROVED,
 		LITERAL
 	}
-	private static final Logger log = Logger.getLogger(BlastTabularParser.class.getName());
+
 
 
 	private File targetFile;
@@ -196,12 +199,12 @@ public class BlastTabularParser implements ResultFactory_V2 {
 
 	private int getFileLineCount(InputStream is){			//Todo mano metodas failo eilutems skaiciuoti
 
-		log.info("Query for hits");
+		Log.i(LOG, "Query for hits");
 		int linesCount = 0;
 		try(LineNumberReader lnr = new LineNumberReader(new InputStreamReader(is))){
 			lnr.skip(Long.MAX_VALUE);
 			linesCount = lnr.getLineNumber();
-			log.info(fileLinesCount + " hits approximately in all results");
+			Log.i(LOG, fileLinesCount + " hits approximately in all results");
 			lnr.close();
 		} catch (IOException e) {
 			e.printStackTrace();							//Todo exeptionus sutvarkyti

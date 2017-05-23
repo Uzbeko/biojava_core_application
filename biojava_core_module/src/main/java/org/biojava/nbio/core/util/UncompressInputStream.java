@@ -51,8 +51,8 @@
 
 package org.biojava.nbio.core.util;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+
+import android.util.Log;
 
 import java.io.*;
 
@@ -78,7 +78,7 @@ import java.io.*;
  */
 public class UncompressInputStream extends FilterInputStream {
 
-//	private final static Logger logger = LoggerFactory.getLogger(UncompressInputStream.class);
+	public static final String LOG = UncompressInputStream.class.getSimpleName();
 
 	/**
 	 * @param is the input stream to decompress
@@ -206,7 +206,7 @@ public synchronized int read(byte[] buf, int off, int len)
 					l_maxcode = (l_n_bits == maxbits) ? l_maxmaxcode :
 							(1 << l_n_bits) - 1;
 
-//					logger.debug("Code-width expanded to ", l_n_bits);
+					Log.d(LOG,"Code-width expanded to "+ l_n_bits);
 
 					l_bitmask = (1 << l_n_bits) - 1;
 					l_bit_pos = resetbuf(l_bit_pos);
@@ -249,7 +249,7 @@ public synchronized int read(byte[] buf, int off, int len)
 					l_maxcode = (1 << l_n_bits) - 1;
 					l_bitmask = l_maxcode;
 
-//					logger.debug("Code tables reset");
+					Log.d(LOG,"Code tables reset");
 
 					l_bit_pos = resetbuf(l_bit_pos);
 					continue main_loop;
@@ -422,8 +422,8 @@ public synchronized int available() throws IOException {
 		if ((header & HDR_FREE) > 0)
 			throw new IOException("Header bit 6 set");
 
-//		logger.debug("block mode: {}", block_mode);
-//		logger.debug("max bits:   {}", maxbits);
+		Log.d(LOG,"block mode: "+ block_mode);
+		Log.d(LOG,"max bits:   "+ maxbits);
 
 
 // initialize stuff
@@ -473,8 +473,8 @@ public boolean markSupported() {
 
 		if (debugTiming) {
 			long end = System.currentTimeMillis();
-		//  logger.debug("Decompressed " + total + " bytes");
-//			logger.warn("Time: {} seconds", (end - start) / 1000);
+//		  Log.d(LOG,"Decompressed " + total + " bytes");
+			Log.w(LOG,"Time: "+(end - start) / 1000+" seconds");
 		}
 	}
 
@@ -483,7 +483,7 @@ public boolean markSupported() {
 
 	public static void main(String[] args) throws Exception {
 		if (args.length != 1) {
-//			logger.info("Usage: UncompressInputStream <file>");
+			Log.i(LOG, "Usage: UncompressInputStream <file>");
 			System.exit(1);
 		}
 
@@ -502,8 +502,8 @@ public boolean markSupported() {
 		}
 
 		long end = System.currentTimeMillis();
-//		logger.info("Decompressed {} bytes", tot);
-//		logger.info("Time: {} seconds", (end - beg) / 1000);
+		Log.i(LOG, "Decompressed {} bytes"+ tot);
+		Log.i(LOG,"Time: "+(end - beg) / 1000+" seconds");
 		in.close();
 	}
 }

@@ -21,8 +21,10 @@
 package org.biojava.nbio.core.sequence;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
+import org.biojava.nbio.core.search.io.blast.BlastXMLParser;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
@@ -37,8 +39,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +53,7 @@ import static org.junit.Assert.*;
 
 public class TranslationTest {
 
-//	private final static Logger logger = LoggerFactory.getLogger(TranslationTest.class);
+	public static final String LOG = TranslationTest.class.getSimpleName();
 
 	private static DNACompoundSet dnaCs = DNACompoundSet.getDNACompoundSet();
 	private static AminoAcidCompoundSet aaCs = AminoAcidCompoundSet.getAminoAcidCompoundSet();
@@ -91,7 +91,7 @@ public class TranslationTest {
 			volvoxPep = volvoxPepReader.process().values().iterator().next();
 		}
 		catch (IOException e) {
-//			logger.error("Exception: ", e);
+			Log.e(LOG,"Exception: ", e);
 			Assert.fail("Encountered exception");
 		}
 		finally {

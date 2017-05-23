@@ -24,6 +24,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.biojava.nbio.core.sequence.AccessionID;
 import org.biojava.nbio.core.sequence.Strand;
+import org.biojava.nbio.core.sequence.io.GenbankReaderHelper;
 import org.biojava.nbio.core.sequence.location.InsdcLocations;
 import org.biojava.nbio.core.sequence.location.InsdcParser;
 import org.biojava.nbio.core.sequence.location.SimpleLocation;
@@ -33,8 +34,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 //TODO sutvarkyti logerius
 
@@ -64,7 +63,7 @@ public class LocationParserTest {
 
 	public static final InsdcParser PARSER = new InsdcParser();
 
-//	private Logger log = LoggerFactory.getLogger(getClass());
+	public static final String LOG = GenbankReaderHelper.class.getSimpleName();
 
 	@Test
 	@Ignore

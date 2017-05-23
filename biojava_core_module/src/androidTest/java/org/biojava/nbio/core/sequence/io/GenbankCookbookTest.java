@@ -21,6 +21,7 @@
 package org.biojava.nbio.core.sequence.io;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.biojava.nbio.core.sequence.DNASequence;
 import org.biojava.nbio.core.sequence.ProteinSequence;
@@ -37,8 +38,6 @@ import org.biojava.nbio.core.sequence.io.util.ClasspathResource;
 import org.biojava.nbio.core.sequence.loader.GenbankProxySequenceReader;
 import org.junit.*;
 import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 
@@ -49,7 +48,7 @@ import java.util.LinkedHashMap;
 @RunWith(AndroidJUnit4.class)
 public class GenbankCookbookTest {
 
-//	private final static Logger logger = LoggerFactory.getLogger(GenbankCookbookTest.class);
+	public static final String LOG = GenbankCookbookTest.class.getSimpleName();
 
 	public GenbankCookbookTest() {
 	}
@@ -83,13 +82,13 @@ public class GenbankCookbookTest {
 				= new GenbankProxySequenceReader<AminoAcidCompound>(System.getProperty("java.io.tmpdir"), "NP_000257", AminoAcidCompoundSet.getAminoAcidCompoundSet());
 		ProteinSequence proteinSequence = new ProteinSequence(genbankProteinReader);
 		genbankProteinReader.getHeaderParser().parseHeader(genbankProteinReader.getHeader(), proteinSequence);
-		//logger.info("Sequence({},{}) = {}...", proteinSequence.getAccession(), proteinSequence.getLength(), proteinSequence.getSequenceAsString().substring(0, 10));
+		Log.i(LOG,"Sequence("+proteinSequence.getAccession()+","+proteinSequence.getLength()+") = "+proteinSequence.getSequenceAsString().substring(0, 10)+"...");
 
 	GenbankProxySequenceReader<NucleotideCompound> genbankDNAReader
 	= new GenbankProxySequenceReader<NucleotideCompound>(System.getProperty("java.io.tmpdir"), "NM_001126", DNACompoundSet.getDNACompoundSet());
 	DNASequence dnaSequence = new DNASequence(genbankDNAReader);
 	genbankDNAReader.getHeaderParser().parseHeader(genbankDNAReader.getHeader(), dnaSequence);
-	//logger.info("Sequence({},{}) = {}...", dnaSequence.getAccession(), dnaSequence.getLength(), dnaSequence.getSequenceAsString().substring(0, 10));
+	Log.i(LOG,"Sequence("+dnaSequence.getAccession()+","+dnaSequence.getLength()+") = "+dnaSequence.getSequenceAsString().substring(0, 10)+"...");
 		/*
 		 * Method 2: With the GenbankReaderHelper
 		 */
@@ -101,12 +100,12 @@ public class GenbankCookbookTest {
 
 		LinkedHashMap<String, DNASequence> dnaSequences = GenbankReaderHelper.readGenbankDNASequence(dnaResource.getInputStream());
 		for (DNASequence sequence : dnaSequences.values()) {
-//			logger.debug("DNA Sequence: {}", sequence.getSequenceAsString());
+			Log.d(LOG,"DNA Sequence: "+ sequence.getSequenceAsString());
 		}
 
 		LinkedHashMap<String, ProteinSequence> protSequences = GenbankReaderHelper.readGenbankProteinSequence(protResource.getInputStream());
 		for (ProteinSequence sequence : protSequences.values()) {
-//			logger.debug("Protein Sequence: {}", sequence.getSequenceAsString());
+			Log.d(LOG,"Protein Sequence: "+ sequence.getSequenceAsString());
 		}
 		/*
 		 * Method 3: With the GenbankReader Object
@@ -120,7 +119,7 @@ public class GenbankCookbookTest {
 		);
 		dnaSequences = dnaReader.process();
 
-//		logger.debug("DNA Sequence: {}", dnaSequences);
+		Log.d(LOG,"DNA Sequence: "+ dnaSequences);
 
 
 		GenbankReader<ProteinSequence, AminoAcidCompound> protReader = new GenbankReader<ProteinSequence, AminoAcidCompound>(
@@ -130,7 +129,7 @@ public class GenbankCookbookTest {
 		);
 		protSequences = protReader.process();
 
-//		logger.debug("Protein Sequence: {}", protSequences);
+		Log.d(LOG,"Protein Sequence: "+ protSequences);
 
 	}
 

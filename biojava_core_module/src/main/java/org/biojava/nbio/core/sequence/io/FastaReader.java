@@ -21,6 +21,8 @@
  */
 package org.biojava.nbio.core.sequence.io;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
@@ -29,8 +31,6 @@ import org.biojava.nbio.core.sequence.io.template.SequenceCreatorInterface;
 import org.biojava.nbio.core.sequence.io.template.SequenceHeaderParserInterface;
 import org.biojava.nbio.core.sequence.template.Compound;
 import org.biojava.nbio.core.sequence.template.Sequence;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ import java.util.LinkedHashMap;
  */
 public class FastaReader<S extends Sequence<?>, C extends Compound> {
 
-//	private final static Logger logger = LoggerFactory.getLogger(FastaReader.class);
+	public static final String LOG = FastaReader.class.getSimpleName();
 
 	SequenceCreatorInterface<C> sequenceCreator;
 	SequenceHeaderParserInterface<S,C> headerParser;
@@ -157,7 +157,7 @@ public class FastaReader<S extends Sequence<?>, C extends Compound> {
 
 					if (sb.length() > 0) {
 						//i.e. if there is already a sequence before
-						//logger.info("Sequence index=" + sequenceIndex);
+						Log.i(LOG,"Sequence index=" + sequenceIndex);
 
 						try {
 							@SuppressWarnings("unchecked")
@@ -167,8 +167,7 @@ public class FastaReader<S extends Sequence<?>, C extends Compound> {
 							processedSequences++;
 
 						} catch (CompoundNotFoundException e) {
-//							logger.warn("Sequence with header '{}' has unrecognised compounds ({}), it will be ignored",
-//									header, e.getMessage());
+							Log.w(LOG,"Sequence with header '"+header+"' has unrecognised compounds ("+e.getMessage()+"), it will be ignored");
 						}
 
 						sb.setLength(0); //this is faster than allocating new buffers, better memory utilization (same buffer)
@@ -198,10 +197,10 @@ public class FastaReader<S extends Sequence<?>, C extends Compound> {
 				//i.e. EOF
 				String seq = sb.toString();
 				if ( seq.length() == 0) {
-//					logger.warn("Can't parse sequence {}. Got sequence of length 0!", sequenceIndex);
-//					logger.warn("header: {}", header);
+					Log.w(LOG,"Can't parse sequence "+sequenceIndex+". Got sequence of length 0!");
+					Log.w(LOG,"header: "+ header);
 				}
-				//logger.info("Sequence index=" + sequenceIndex + " " + fileIndex );
+				Log.i(LOG,"Sequence index=" + sequenceIndex + " " + fileIndex );
 				try {
 					@SuppressWarnings("unchecked")
 					S sequence = (S)sequenceCreator.getSequence(seq, sequenceIndex);
@@ -209,8 +208,7 @@ public class FastaReader<S extends Sequence<?>, C extends Compound> {
 					sequences.put(sequence.getAccession().getID(),sequence);
 					processedSequences++;
 				} catch (CompoundNotFoundException e) {
-//					logger.warn("Sequence with header '{}' has unrecognised compounds ({}), it will be ignored",
-//							header, e.getMessage());
+					Log.w(LOG,"Sequence with header '"+header+"' has unrecognised compounds ("+e.getMessage()+"), it will be ignored");
 				}
 				keepGoing = false;
 			}
@@ -250,7 +248,7 @@ public class FastaReader<S extends Sequence<?>, C extends Compound> {
 			is.close();
 
 
-			//logger.info("Protein Sequences: {}", proteinSequences);
+			Log.i(LOG,"Protein Sequences: "+ proteinSequences);
 
 			File file = new File(inputFile);
 			FastaReader<ProteinSequence,AminoAcidCompound> fastaProxyReader =
@@ -267,16 +265,16 @@ public class FastaReader<S extends Sequence<?>, C extends Compound> {
 
 			for(String key : proteinProxySequences.keySet()){
 				ProteinSequence proteinSequence = proteinProxySequences.get(key);
-//				logger.info("Protein Proxy Sequence Key: {}", key);
+				Log.i(LOG,"Protein Proxy Sequence Key: "+ key);
 //                if(key.equals("Q98SJ1_CHICK/15-61")){
 //                    int dummy = 1;
 //                }
-//				logger.info("Protein Sequence: {}", proteinSequence.toString());
+				Log.i(LOG,"Protein Sequence: "+ proteinSequence.toString());
 
 			}
 
 		} catch (Exception e) {
-//			logger.warn("Exception: ", e);
+			Log.w(LOG,"Exception: ", e);
 		}
 	}
 }

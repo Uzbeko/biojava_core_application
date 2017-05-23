@@ -20,20 +20,18 @@
  */
 package org.biojava.nbio.core.sequence.loader;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava.nbio.core.sequence.features.FeatureInterface;
-import org.biojava.nbio.core.sequence.loader.GenbankProxySequenceReader;
 import org.biojava.nbio.core.sequence.template.AbstractSequence;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//TODO sutvarkyti logerius kuriuos uzkomentavau
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ import org.biojava.nbio.core.sequence.features.Qualifier;
 public class GenbankProxySequenceReaderTest {
 
 	private String gi;
-//	private final static Logger logger = LoggerFactory.getLogger(GenbankProxySequenceReaderTest.class);
+	public static final String LOG = GenbankProxySequenceReaderTest.class.getSimpleName();
 
 	public GenbankProxySequenceReaderTest(String gi) {
 		this.gi = gi;
@@ -77,7 +75,7 @@ public class GenbankProxySequenceReaderTest {
 
 	@Test
 	public void testFeatures() throws IOException, InterruptedException, CompoundNotFoundException {
-//		logger.info("run test for protein: {}", gi);
+		Log.i(LOG,"run test for protein: {}: " + gi);
 		GenbankProxySequenceReader<AminoAcidCompound> genbankReader
 				= new GenbankProxySequenceReader<AminoAcidCompound>(System.getProperty("java.io.tmpdir"),
 						this.gi,
@@ -98,36 +96,36 @@ public class GenbankProxySequenceReaderTest {
 		Assert.assertTrue(seq.getDescription() != null);
 
 		// test accession Id
-//		logger.info("accession id: {}", seq.getAccession().getID());
+		Log.i(LOG,"accession id: {}; " + seq.getAccession().getID());
 		Assert.assertNotNull(seq.getAccession().getID());
 		// test GID number
 		if( seq.getAccession().getIdentifier() != null) { // GI: in header now optional. See #596
 			Assert.assertEquals(gi, seq.getAccession().getIdentifier());
-//			logger.info("found identifier '{}'", seq.getAccession().getIdentifier());
+			Log.i(LOG,"found identifier '{}';; " + seq.getAccession().getIdentifier());
 		}
 		// test taxonomy id
-//		logger.info("taxonomy id: {}", seq.getTaxonomy().getID());
+		Log.i(LOG,"taxonomy id: {}; " + seq.getTaxonomy().getID());
 		Assert.assertNotNull(seq.getTaxonomy().getID());
 		Assert.assertNotNull(Integer.decode(seq.getTaxonomy().getID().split(":")[1]));
 
 		// test taxonomy name
 		String taxonName = seq.getFeaturesByType("source").get(0).getQualifiers().get("organism").get(0).getValue();
-//		logger.info("taxonomy name '{}'", taxonName);
+		Log.i(LOG,"taxonomy name '{}'; " + taxonName);
 		Assert.assertNotNull(taxonName);
 
 		if (seq.getFeaturesByType("CDS").size() > 0) {
 			FeatureInterface<AbstractSequence<AminoAcidCompound>, AminoAcidCompound> CDS = seq.getFeaturesByType("CDS").get(0);
-//			logger.info("CDS: {}", CDS);
+			Log.i(LOG,"CDS: {}; " + CDS);
 			String codedBy = CDS.getQualifiers().get("coded_by").get(0).getValue();
 			Assert.assertNotNull(codedBy);
 			Assert.assertTrue(!codedBy.isEmpty());
-//			logger.info("\t\tcoded_by: {}", codedBy);
+			Log.i(LOG,"\t\tcoded_by: {}; " + codedBy);
 		}
 	}
 
 	@Test
 	public void testProteinSequenceFactoring() throws Exception {
-//		logger.info("create protein sequence test for target {}", gi);
+		Log.i(LOG,"create protein sequence test for target {}; " + gi);
 
 		GenbankProxySequenceReader<AminoAcidCompound> genbankReader
 				= new GenbankProxySequenceReader<AminoAcidCompound>(System.getProperty("java.io.tmpdir"),
@@ -159,7 +157,7 @@ public class GenbankProxySequenceReaderTest {
 				}
 			}
 		} else {
-//			logger.info("target {} has no CDS", gi);
+			Log.i(LOG,"target {} has no CDS; " + gi);
 		}
 
 	}

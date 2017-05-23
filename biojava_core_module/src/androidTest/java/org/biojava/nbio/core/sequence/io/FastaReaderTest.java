@@ -21,27 +21,18 @@
 package org.biojava.nbio.core.sequence.io;
 
 import android.support.test.runner.AndroidJUnit4;
-
+import android.util.Log;
 import junit.framework.TestCase;
-
 import org.biojava.MyApplication;
-import org.biojava.R;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
-import org.biojava.nbio.core.sequence.io.FastaReader;
-import org.biojava.nbio.core.sequence.io.GenericFastaHeaderParser;
-import org.biojava.nbio.core.sequence.io.ProteinSequenceCreator;
 import org.junit.*;
 import org.junit.runner.RunWith;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//TODO sutvarkyti Loggerius. Nepraejo testo !!!!!!
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
-import java.util.logging.Level;
+
 
 /**
  *
@@ -50,7 +41,7 @@ import java.util.logging.Level;
 @RunWith(AndroidJUnit4.class)
 public class FastaReaderTest extends TestCase{
 
-//	private final static Logger logger = LoggerFactory.getLogger(FastaReaderTest.class);
+	public static final String LOG = FastaReaderTest.class.getSimpleName();
 
 	public FastaReaderTest() {
 	}
@@ -78,7 +69,7 @@ public class FastaReaderTest extends TestCase{
 	 */
 	@Test
 	public void testProcess() throws Exception {
-//		logger.info("process");
+		Log.i(LOG,"process");
 //		InputStream inStream = this.getClass().getResourceAsStream("/PF00104_small.fasta"); //sena direktorija
 
 	//-----------------------------------------Evino pakeista
@@ -98,7 +89,7 @@ public class FastaReaderTest extends TestCase{
 		inStream.close();
 
 		//Should have 282 sequences
-		//logger.debug("Expecting 283 got " + proteinSequences.size());
+		Log.d(LOG,"Expecting 283 got " + proteinSequences.size());
 		assertEquals(proteinSequences.size() ,  283 );
 
 		int seqNum = 0;
@@ -110,8 +101,8 @@ public class FastaReaderTest extends TestCase{
 					assertEquals(proteinSequence.getSequenceAsString(),"-----------------FK-N----LP-LED----------------Q----ITL--IQY-----------SWM----------------------CL-SSFA------LSWRSYK---HTNSQFLYFAPDLVF-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 					break;
 				case 281:
-					//logger.debug("Get Accession: {}", proteinSequence.getAccession());
-					//logger.debug("Get Protein Sequence: {}", proteinSequence.getSequenceAsString());
+					Log.d(LOG,"Get Accession: "+ proteinSequence.getAccession());
+					Log.d(LOG,"Get Protein Sequence: "+ proteinSequence.getSequenceAsString());
 					assertEquals(proteinSequence.getAccession().getID(),"Q9PU76_CRONI/141-323");
 					assertEquals(proteinSequence.getSequenceAsString(),"VETVTELTEFAKSI-PGFS-N----LD-LND----------------Q----VTL--LKY-----------GVY----------------------EA-IFAM------LASVMNK---DGMPVAYGNGFITRE------------------------------------------------------------------------------------------------------------------------------------------------------------FLKSLRKPFCDIMEPKFDFA-MKF-NSL-E-LDDSDI--------------------SLFVA-AIIC-CGDRPG-------------------------------------------LVNV--GHIEKMQESIVHVLKL-H-----LQN---------NH---PD----------------------------DI------F--------LFP-KLLQKMAD-LRQLV-----------------TEH-AQLV--QIIKK---TESDAHLHPLL-------QEI---");
 					break;
@@ -127,7 +118,7 @@ public class FastaReaderTest extends TestCase{
 
 	@Test
 	public void processIntTest() throws Exception {
-//		logger.info("process(int)");
+		Log.i(LOG,"process(int)");
 		//pakeiciau source direktorija, nes androidas turi savo specifine!!!!!!!!!!!!!!!!!!!!!!!!
 //		InputStream inStream = this.getClass().getResourceAsStream("/PF00104_small.fasta"); //buvusi direktorija
 
@@ -146,7 +137,7 @@ public class FastaReaderTest extends TestCase{
 		LinkedHashMap<String,ProteinSequence> proteinSequences = fastaReader.process(200);
 
 		//Should have 200 sequences
-		//logger.debug("Expecting 200 got " + proteinSequences.size());
+		Log.d(LOG,"Expecting 200 got " + proteinSequences.size());
 		assertEquals(proteinSequences.size() ,  200 );
 
 		int seqNum = 0;
@@ -178,8 +169,8 @@ public class FastaReaderTest extends TestCase{
 					assertEquals(proteinSequence.getSequenceAsString(), "TKCIIKTVEFAKQL-PGFT-T----LT-IAD----------------Q----ITL--LKA-----------ACL----------------------DI-LILR------ICTRYTP---EQDTMTFSEGLTLN-------------------------------------------------------------------------------------------------------------------------------------------------------------RTQMHKAGFGPLTDLVFAFA-NQL-LPL-E-MDDAET--------------------GLLSA-ICLI-CGDRQD-------------------------------------------LEQP--DRVDMLQEPLLEALKV-Y-----VRK---------RR---PS----------------------------RP------H--------MFP-KMLMKITD-LRSIS-----------------AKG-AERV--ITLKMEIPG--SMP--PLI-------QEM---");
 					break;
 				case 81:
-					//logger.debug(proteinSequence.getAccession());
-					//logger.debug(proteinSequence.getSequenceAsString());
+					Log.d(LOG,proteinSequence.getAccession().toString());
+					Log.d(LOG,proteinSequence.getSequenceAsString());
 					assertEquals(proteinSequence.getAccession().getID(),"Q9PU76_CRONI/141-323");
 					assertEquals(proteinSequence.getSequenceAsString(),"VETVTELTEFAKSI-PGFS-N----LD-LND----------------Q----VTL--LKY-----------GVY----------------------EA-IFAM------LASVMNK---DGMPVAYGNGFITRE------------------------------------------------------------------------------------------------------------------------------------------------------------FLKSLRKPFCDIMEPKFDFA-MKF-NSL-E-LDDSDI--------------------SLFVA-AIIC-CGDRPG-------------------------------------------LVNV--GHIEKMQESIVHVLKL-H-----LQN---------NH---PD----------------------------DI------F--------LFP-KLLQKMAD-LRQLV-----------------TEH-AQLV--QIIKK---TESDAHLHPLL-------QEI---");
 					break;
@@ -233,7 +224,7 @@ public class FastaReaderTest extends TestCase{
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+			Log.e(LOG,"Exception", ex);
 
 			fail(ex.getMessage());
 		}
@@ -278,7 +269,7 @@ public class FastaReaderTest extends TestCase{
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+			Log.e(LOG,"Exception", ex);
 
 			fail(ex.getMessage());
 		}

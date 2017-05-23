@@ -36,7 +36,8 @@ import org.biojava.nbio.core.sequence.template.CompoundSet;
  */
 public class CDSSequence extends DNASequence {
 
-	//private static final Logger log = Logger.getLogger(CDSSequence.class.getName());
+	public static final String LOG = CDSSequence.class.getSimpleName();
+
 	Integer phase = 0; // 0, 1, 2
 	TranscriptSequence parentTranscriptSequence;
 

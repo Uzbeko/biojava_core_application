@@ -26,6 +26,8 @@
  */
 package org.biojava.nbio.core.sequence.template;
 
+import android.util.Log;
+
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.AccessionID;
 import org.biojava.nbio.core.sequence.DataSource;
@@ -37,8 +39,6 @@ import org.biojava.nbio.core.sequence.location.SequenceLocation;
 import org.biojava.nbio.core.sequence.location.SimpleLocation;
 import org.biojava.nbio.core.sequence.location.template.Location;
 import org.biojava.nbio.core.sequence.storage.ArrayListSequenceReader;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -49,7 +49,7 @@ import java.util.*;
  */
 public abstract class AbstractSequence<C extends Compound> implements Sequence<C> {
 
-//	private final static Logger logger = LoggerFactory.getLogger(AbstractSequence.class);
+	public static final String LOG = AbstractSequence.class.getSimpleName();
 
 	private TaxonomyID taxonomy;
 	private AccessionID accession;
@@ -540,7 +540,7 @@ public abstract class AbstractSequence<C extends Compound> implements Sequence<C
 					sequenceStorage.setContents(parentSequence.getSequenceAsString());
 				} catch (CompoundNotFoundException e) {
 					// TODO is there a better way to handle this exception?
-//					logger.error("Problem setting contents from parent sequence, some unrecognised compound: {}",e.getMessage());
+					Log.e(LOG,"Problem setting contents from parent sequence, some unrecognised compound: "+e.getMessage());
 				}
 				return sequenceStorage;
 			}

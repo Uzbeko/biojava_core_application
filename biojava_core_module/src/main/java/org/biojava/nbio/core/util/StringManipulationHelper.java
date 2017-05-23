@@ -23,8 +23,8 @@
  */
 package org.biojava.nbio.core.util;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.NamedNodeMap;
@@ -48,7 +48,7 @@ import java.util.Scanner;
  */
 public class StringManipulationHelper  {
 
-//	private final static Logger logger = LoggerFactory.getLogger(StringManipulationHelper.class);
+	public static final String LOG = StringManipulationHelper.class.getSimpleName();
 
 	/**
 	 * we are using Unix endline here, since this is used for testing XML and it
@@ -61,9 +61,6 @@ public class StringManipulationHelper  {
 	private StringManipulationHelper() {
 		// to prevent instantiation
 	}
-
-
-
 
 
 	/**
@@ -82,12 +79,12 @@ public class StringManipulationHelper  {
 		sb.append(line).append(UNIX_NEWLINE);
 			}
 		} catch (IOException e) {
-			// logger.error("Exception: ", e);
+			 Log.e(LOG,"Exception: "+ e);
 		} finally {
 			try {
 				stream.close();
 			} catch (IOException e) {
-//				logger.error("Exception: ", e);
+				Log.e(LOG,"Exception: "+ e);
 			}
 		}
 
@@ -144,13 +141,13 @@ public class StringManipulationHelper  {
 			expectedDocument = documentBuilder.parse(new ByteArrayInputStream(expected.getBytes()));
 			actualDocument = documentBuilder.parse(new ByteArrayInputStream(actual.getBytes()));
 		} catch (ParserConfigurationException e) {
-//			logger.error("Exception: ", e);
+			Log.e(LOG,"Exception: "+ e);
 			throw new RuntimeException("Couldn't Parse XML", e);
 		} catch (SAXException e) {
-//			logger.error("Exception: ", e);
+			Log.e(LOG,"Exception: "+ e);
 			throw new RuntimeException("Couldn't Parse XML", e);
 		} catch (IOException e) {
-//			logger.error("Exception: ", e);
+			Log.e(LOG,"Exception: "+ e);
 			throw new RuntimeException("Couldn't Parse XML", e);
 		}
 		final DocumentType doctype1 = expectedDocument.getDoctype();

@@ -21,6 +21,8 @@
 package org.biojava.nbio.core.search.io.blast;
 
 
+import android.util.Log;
+
 import org.biojava.nbio.core.search.io.Hit;
 import org.biojava.nbio.core.search.io.Hsp;
 import org.biojava.nbio.core.search.io.Result;
@@ -43,7 +45,6 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathException;
 
-//import org.slf4j.LoggerFactory;
 
 /**
  * Re-designed by Paolo Pavan on the footprint of:
@@ -57,7 +58,8 @@ import javax.xml.xpath.XPathException;
  * @author Paolo Pavan
  */
 public class BlastXMLParser implements ResultFactory_V2 {
-//	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Hsp.class);
+public static final String LOG = BlastXMLParser.class.getSimpleName();
+
 	Document blastDoc = null;
 	private File targetFile;
 	private InputStream fileInputStream;
@@ -79,31 +81,31 @@ public class BlastXMLParser implements ResultFactory_V2 {
 
 
 	private void readFile(String blastFile) throws IOException, ParseException{
-//		logger.info("Start reading " + blastFile);
+		Log.i(LOG,"Start reading " + blastFile);
 		try {
 			blastDoc = XMLHelper.loadXML(blastFile);
 		} catch (SAXException ex) {
-//			logger.error("A parsing error has occurred while reading XML blast file");
+			Log.e(LOG,"A parsing error has occurred while reading XML blast file");
 			throw new ParseException(ex.getMessage(),0);
 		} catch (ParserConfigurationException ex) {
-//			logger.error("Internal XML parser non properly configured");
+			Log.e(LOG,"Internal XML parser non properly configured");
 			throw new ParseException(ex.getMessage(),0);
 		}
-//		logger.info("Read finished");
+		Log.i(LOG,"Read finished");
 	}
 
 	private void readStream() throws IOException, ParseException{
-//		logger.info("Start reading " + blastFile);
+		Log.i(LOG,"Start reading fileInputStream");
 		try {
 			blastDoc = XMLHelper.inputStreamToDocument(fileInputStream);
 		} catch (SAXException ex) {
-//			logger.error("A parsing error has occurred while reading XML blast file");
+			Log.e(LOG,"A parsing error has occurred while reading XML blast file");
 			throw new ParseException(ex.getMessage(),0);
 		} catch (ParserConfigurationException ex) {
-//			logger.error("Internal XML parser non properly configured");
+			Log.e(LOG,"Internal XML parser non properly configured");
 			throw new ParseException(ex.getMessage(),0);
 		}
-//		logger.info("Read finished");
+		Log.i(LOG,"Read finished");
 	}
 
 	@Override
@@ -132,9 +134,9 @@ public class BlastXMLParser implements ResultFactory_V2 {
 			String reference = XMLHelper.selectSingleElement(blastDoc.getDocumentElement(),"BlastOutput_reference").getTextContent();
 			String dbFile = XMLHelper.selectSingleElement(blastDoc.getDocumentElement(),"BlastOutput_db").getTextContent();
 
-//			logger.info("Query for hits in "+ targetFile);
+			Log.i(LOG,"Query for hits in "+ targetFile);
 			ArrayList<Element> IterationsList = XMLHelper.selectElements(blastDoc.getDocumentElement(), "BlastOutput_iterations/Iteration[Iteration_hits]");
-//			logger.info(IterationsList.size() + " results");
+			Log.i(LOG,IterationsList.size() + " results");
 
 			resultsCollection = new ArrayList<Result>();
 
@@ -230,7 +232,7 @@ public class BlastXMLParser implements ResultFactory_V2 {
 		} catch (XPathException e) {
 			throw new ParseException(e.getMessage(),0);
 		}
-//		logger.info("Parsing of "+targetFile+" finished.");
+		Log.i(LOG,"Parsing of "+targetFile+" finished.");
 
 		return resultsCollection;
 	}
