@@ -23,6 +23,8 @@ public class ParseFastaFile {
 
     public static final String LOG = ParseFastaFile.class.getSimpleName();
 
+
+
     public LinkedHashMap<String, ProteinSequence> parseFasta(Uri is) {
 
         LinkedHashMap<String, ProteinSequence> sequences = new LinkedHashMap<>();

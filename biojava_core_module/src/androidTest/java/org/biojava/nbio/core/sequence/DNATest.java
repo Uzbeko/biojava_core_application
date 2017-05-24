@@ -99,7 +99,6 @@ public class DNATest {
 				subSeq.getSequenceAsString(), is("CGT"));
 	}
 
-	//TODO nepraein testo translateToRna() reikia pataisyti
 	@Test
 	public void translateToRna() throws CompoundNotFoundException {
 		String s = getSeq("ATGGCGGCGCTGAGCGGT").getRNASequence().getSequenceAsString();

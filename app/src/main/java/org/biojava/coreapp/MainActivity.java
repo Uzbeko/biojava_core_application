@@ -8,27 +8,47 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.biojava.MyApplication;
+import org.biojava.bl.Controler;
+import org.biojava.bl.ListAdapter;
 import org.biojava.bl.ParseFastaFile;
 import org.biojava.bl.Translation;
 import org.biojava.demo.ParseFastaFileDemo;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
+import org.biojava.nbio.core.search.io.Hit;
+import org.biojava.nbio.core.search.io.Result;
+import org.biojava.nbio.core.search.io.blast.BlastXMLParser;
 import org.biojava.nbio.core.sequence.DNASequence;
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
+import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
+import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
+import org.biojava.nbio.core.sequence.io.DNASequenceCreator;
 import org.biojava.nbio.core.sequence.io.FastaReader;
 import org.biojava.nbio.core.sequence.io.GenericFastaHeaderParser;
 import org.biojava.nbio.core.sequence.io.ProteinSequenceCreator;
+import org.biojava.nbio.core.sequence.template.CompoundSet;
+import org.biojava.nbio.core.sequence.template.SequenceMixin;
+import org.biojava.nbio.core.sequence.template.SequenceView;
+import org.biojava.nbio.core.sequence.views.ComplementSequenceView;
+import org.biojava.nbio.core.sequence.views.ReversedSequenceView;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.biojava.coreapp.R.id.outputView2;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,14 +56,21 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOG = MainActivity.class.getSimpleName();
 
 
+    ListView buttonList;
+    ArrayList list = new ArrayList();
+
+    ArrayList<String> myData=new ArrayList<String>();
+
+    ArrayAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 //---------------------------------------------------------------------
-        ActivityManager.RunningAppProcessInfo info = new ActivityManager.RunningAppProcessInfo();
-        ActivityManager.getMyMemoryState(info);
-//        final InputStream classpathIs = getClass().getClassLoader().getResourceAsStream("org/biojava/nbio/core/sequence/iupac.txt");//senoji direktorij
+//        ActivityManager.RunningAppProcessInfo info = new ActivityManager.RunningAppProcessInfo();
+//        ActivityManager.getMyMemoryState(info);
+////        final InputStream classpathIs = getClass().getClassLoader().getResourceAsStream("org/biojava/nbio/core/sequence/iupac.txt");//senoji direktorij
 //        XmlPullParserFactory factory = null;
 //        try {
 //            factory = XmlPullParserFactory.newInstance();
@@ -54,110 +81,279 @@ public class MainActivity extends AppCompatActivity {
 
 
         Log.e(LOG, System.getProperty("os.name"));
-//---------------------test
-        String resource = "org/biojava/nbio/core/sequence/kelios_sekos.fasta";
-        long timeS = System.currentTimeMillis();
 
+//---------button list---------------------------------------------------------
+        buttonList = (ListView) findViewById(R.id.Buttons);
 
-        Log.d(LOG, "gaidys!!!!!!!!!!!!!!!!!!!!!");
-        System.err.println("EEEEEEEEEEEEEE TEstuoju1");
+        myData.add("Translate");
+        myData.add("to_RNA");
+        myData.add("ParseFasta");
+        myData.add("inversija");
+        myData.add("komplementari");
+        myData.add("reversija");
+        myData.add("posekis");
+        myData.add("GC count");
+        myData.add("AT count");
+        myData.add("composition");
+        myData.add("kmerNonOverlap");
+        myData.add("kmerOverlap");
+        myData.add("blast_report_paerser");
+        myData.add("other");
 
+        ListAdapter adapter = new ListAdapter(this,myData);
+        buttonList.setAdapter(adapter);
 
-        try {
-
-            InputStream inStream = null;
-            try {
-                inStream = MyApplication.getAppContext().getAssets().open(resource);
-            } catch (IOException e) {                                                //Todo reiktu apdoroti exeptionus
-                System.err.println("An IOException was caught :" + e.getMessage());
-                e.printStackTrace();
-            }
-
-            FastaReader<ProteinSequence, AminoAcidCompound> fastaReader = new FastaReader<>(
-                    inStream,
-                    new GenericFastaHeaderParser<ProteinSequence, AminoAcidCompound>(),
-                    new ProteinSequenceCreator(AminoAcidCompoundSet.getAminoAcidCompoundSet()));
-
-            LinkedHashMap<String, ProteinSequence> b;
-
-            int nrSeq = 0;
-
-            while ((b = fastaReader.process(100)) != null) {
-                for (String key : b.keySet()) {
-                    nrSeq++;
-                    System.out.println(nrSeq + " : " + key + " " + b.get(key));
-                    if (nrSeq % 100000 == 0)
-                        System.out.println(nrSeq);
-                }
-
-            }
-            long timeE = System.currentTimeMillis();
-            System.out.println("parsed a total of " + nrSeq + " TREMBL sequences! in " + (timeE - timeS));
-        } catch (Exception ex) {
-            Log.e(LOG, "exception", ex);
-        }
-
-//----------Buttons-------------------------------------------------------
-
-        Button buton = (Button) findViewById(R.id.translate);
-        buton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent();
-                intent.setType("*/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select a file"), 123);
-
-
-            }
-        });
-
-        Button buton1 = (Button) findViewById(R.id.toRNA);
-        buton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //        InputStream classpathIs = getApplicationContext().getResources().openRawResource(R.raw.iupac2);
-
-                try {
-                    String rnaString = getSeq("ATGGCGGCGCTGAGCGGT").getRNASequence().getSequenceAsString();
-                    TextView outputView = (TextView) findViewById(R.id.outputView);
-                    outputView.setText(rnaString);
-                } catch (CompoundNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        Button buton2 = (Button) findViewById(R.id.parseFasta);
-        buton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent();
-                intent.setType("*/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select a file"), 124);
-
-            }
-        });
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+            super.onActivityResult(requestCode, resultCode, data);
+    //---------------------------------------------------------------------------------- TRANSLATE_6
+            if (requestCode == 120 && resultCode == RESULT_OK) {
+                Uri fileUri = data.getData(); //The uri with the location of the file
 
+                try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+
+//                    Controler control = new Controler(fileInputsteam);
+//                    List<String> translatedSeq = control.getResult(requestCode);
+
+                    Translation translate = new Translation();
+                    List<String> translatedSeq = translate.doTranslation(fileInputsteam);
+
+                    TextView outputView = (TextView) findViewById(outputView2);
+                    outputView.setText(TextUtils.join(" \n\n ", translatedSeq));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+    //----------------------------------------------------------------------translateToRna
+            if (requestCode == 121 && resultCode == RESULT_OK) {
+                Uri fileUri = data.getData(); //The uri with the location of the file
+
+                try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+                    FastaReader<ProteinSequence, AminoAcidCompound> fastaReader = new FastaReader<>(
+                            fileInputsteam,
+                            new GenericFastaHeaderParser<ProteinSequence, AminoAcidCompound>(),
+                            new ProteinSequenceCreator(AminoAcidCompoundSet.getAminoAcidCompoundSet()));
+
+                    LinkedHashMap<String, ProteinSequence> sequences = fastaReader.process();
+
+                    TextView outputView = (TextView) findViewById(outputView2);
+
+                    int nrSeq = 0;
+                    for (String key : sequences.keySet()) {
+                        nrSeq++;
+                        String dnaToRNA = new DNASequence(sequences.get(key).toString()).getRNASequence().getSequenceAsString();
+                        Log.d(LOG, nrSeq + " : " + key + " " + dnaToRNA );
+                        outputView.append(nrSeq + " : " + key + " " + dnaToRNA + "\n");
+                    }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (CompoundNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+    //--------------------------------------------------------------------------------------------PARSE
+            if (requestCode == 122 && resultCode == RESULT_OK) {
+
+                Log.d(LOG, "suveike failo ivedimas is parse fasta ");
+                Uri fileUri = data.getData(); //The uri with the location of the file
+
+                ParseFastaFile parseF = new ParseFastaFile();
+                LinkedHashMap<String, ProteinSequence> sequences = parseF.parseFasta(fileUri);
+
+                TextView outputView = (TextView) findViewById(outputView2);
+                outputView.setText("");
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+                    nrSeq++;
+                    Log.d(LOG, nrSeq + " : " + key + " " + sequences.get(key));
+                    outputView.append(nrSeq + " : " + key + " " + sequences.get(key) + "\n\n");
+                }
+            }
+    //-------------------------------------------------------------------------------------------inversija
         if (requestCode == 123 && resultCode == RESULT_OK) {
             Uri fileUri = data.getData(); //The uri with the location of the file
 
             try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
 
-                Translation translate = new Translation();
-                List<String> translatedSeq = translate.doTranslation(fileInputsteam);
+                FastaReader<ProteinSequence, AminoAcidCompound> fastaReader = new FastaReader<>(
+                        fileInputsteam,
+                        new GenericFastaHeaderParser<ProteinSequence, AminoAcidCompound>(),
+                        new ProteinSequenceCreator(AminoAcidCompoundSet.getAminoAcidCompoundSet()));
 
-                TextView outputView = (TextView) findViewById(R.id.outputView);
-                outputView.setText(TextUtils.join(" \n\n ", translatedSeq));
+                LinkedHashMap<String, ProteinSequence> sequences = fastaReader.process();
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+                    nrSeq++;
+                    String invertSquence = new DNASequence(sequences.get(key).toString()).getInverse().getSequenceAsString();
+                    Log.d(LOG, nrSeq + " : " + key + " " +  invertSquence);
+                    outputView.append(nrSeq + " : " + key + " " + invertSquence + "\n\n");
+                }
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (CompoundNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+//-------------------------------------------------------------------------------------------komplementari
+        if (requestCode == 124 && resultCode == RESULT_OK) {
+            Uri fileUri = data.getData(); //The uri with the location of the file
+
+            try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+                FastaReader<DNASequence, NucleotideCompound> fastaReader = new FastaReader<>(
+                        fileInputsteam,
+                        new GenericFastaHeaderParser<DNASequence, NucleotideCompound>(),
+                        new DNASequenceCreator(DNACompoundSet.getDNACompoundSet()));
+
+                LinkedHashMap<String, DNASequence> sequences = fastaReader.process();
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+                    nrSeq++;
+                    String komplementSquence = new ComplementSequenceView<NucleotideCompound>(sequences.get(key)).getSequenceAsString();
+                    Log.d(LOG, nrSeq + " : " + key + " " +  komplementSquence);
+                    outputView.append(nrSeq + " : " + key + " " + komplementSquence + "\n\n");
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+//-------------------------------------------------------------------------------------------reversija
+        if (requestCode == 125 && resultCode == RESULT_OK) {
+            Uri fileUri = data.getData(); //The uri with the location of the file
+
+            try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+                FastaReader<DNASequence, NucleotideCompound> fastaReader = new FastaReader<>(
+                        fileInputsteam,
+                        new GenericFastaHeaderParser<DNASequence, NucleotideCompound>(),
+                        new DNASequenceCreator(DNACompoundSet.getDNACompoundSet()));
+
+                LinkedHashMap<String, DNASequence> sequences = fastaReader.process();
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+                    nrSeq++;
+                    String reverttSquence = new ReversedSequenceView<NucleotideCompound>(sequences.get(key)).getSequenceAsString();
+                    Log.d(LOG, nrSeq + " : " + key + " " +  reverttSquence);
+                    outputView.append(nrSeq + " : " + key + " " + reverttSquence + "\n\n");
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+//-------------------------------------------------------------------------------------------subSequence
+
+        if (requestCode == 126 && resultCode == RESULT_OK) {
+            Uri fileUri = data.getData(); //The uri with the location of the file
+
+            try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+                FastaReader<DNASequence, NucleotideCompound> fastaReader = new FastaReader<>(
+                        fileInputsteam,
+                        new GenericFastaHeaderParser<DNASequence, NucleotideCompound>(),
+                        new DNASequenceCreator(DNACompoundSet.getDNACompoundSet()));
+
+                LinkedHashMap<String, DNASequence> sequences = fastaReader.process();
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+                    nrSeq++;
+                    String subSequence = sequences.get(key).getSubSequence(7, 17).getSequenceAsString();
+                    Log.d(LOG, nrSeq + " : " + key + " " +  subSequence);
+                    outputView.append(nrSeq + " : " + key + " " + subSequence + "\n\n");
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+//-------------------------------------------------------------------------------------------GC count
+
+        if (requestCode == 127 && resultCode == RESULT_OK) {
+            Uri fileUri = data.getData(); //The uri with the location of the file
+
+            try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+                FastaReader<DNASequence, NucleotideCompound> fastaReader = new FastaReader<>(
+                        fileInputsteam,
+                        new GenericFastaHeaderParser<DNASequence, NucleotideCompound>(),
+                        new DNASequenceCreator(DNACompoundSet.getDNACompoundSet()));
+
+                LinkedHashMap<String, DNASequence> sequences = fastaReader.process();
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+                    nrSeq++;
+                    int gcCount = sequences.get(key).getGCCount();
+                    Log.d(LOG, nrSeq + " : " + key + "; GC count: " + gcCount);
+                    outputView.append(nrSeq + " : " + key + "; GC count: " + gcCount+ "\n\n");
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+//-------------------------------------------------------------------------------------------AT count
+        if (requestCode == 128 && resultCode == RESULT_OK) {
+            Uri fileUri = data.getData(); //The uri with the location of the file
+
+            try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+                FastaReader<DNASequence, NucleotideCompound> fastaReader = new FastaReader<>(
+                        fileInputsteam,
+                        new GenericFastaHeaderParser<DNASequence, NucleotideCompound>(),
+                        new DNASequenceCreator(DNACompoundSet.getDNACompoundSet()));
+
+                LinkedHashMap<String, DNASequence> sequences = fastaReader.process();
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+                    nrSeq++;
+                    int atCount = SequenceMixin.countAT(sequences.get(key));
+                    Log.d(LOG, nrSeq + " : " + key + "; GC count: " + atCount);
+                    outputView.append(nrSeq + " : " + key + "; GC count: " + atCount+ "\n\n");
+                }
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -165,31 +361,170 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (requestCode == 124 && resultCode == RESULT_OK) {
-
-            Log.d(LOG, "suveike failo ivedimas is parse fasta ");
+//-------------------------------------------------------------------------------------------composition
+        if (requestCode == 129 && resultCode == RESULT_OK) {
             Uri fileUri = data.getData(); //The uri with the location of the file
 
-            ParseFastaFile parseF = new ParseFastaFile();
-            LinkedHashMap<String, ProteinSequence> sequences = parseF.parseFasta(fileUri);
+            try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
 
-            TextView outputView = (TextView) findViewById(R.id.outputView);
-            outputView.setText("");
+                FastaReader<DNASequence, NucleotideCompound> fastaReader = new FastaReader<>(
+                        fileInputsteam,
+                        new GenericFastaHeaderParser<DNASequence, NucleotideCompound>(),
+                        new DNASequenceCreator(DNACompoundSet.getDNACompoundSet()));
 
-            int nrSeq = 0;
-            for (String key : sequences.keySet()) {
-                nrSeq++;
-                Log.d(LOG, nrSeq + " : " + key + " " + sequences.get(key));
-                outputView.append(nrSeq + " : " + key + " " + sequences.get(key) + "\n");
+                LinkedHashMap<String, DNASequence> sequences = fastaReader.process();
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+
+
+                    DNASequence seq = sequences.get(key);
+                    CompoundSet<NucleotideCompound> set = seq.getCompoundSet();
+                    Map<NucleotideCompound, Double> distribution = SequenceMixin.getDistribution(seq);
+
+                    nrSeq++;
+                    outputView.append(nrSeq + " : " + key + "; copmosition: \n");
+                    outputView.append("A distribution: "+ distribution.get(set.getCompoundForString("A"))+"\n");
+                    outputView.append("T distribution: "+ distribution.get(set.getCompoundForString("T"))+"\n");
+                    outputView.append("G distribution: "+ distribution.get(set.getCompoundForString("G"))+"\n");
+                    outputView.append("C distribution: "+ distribution.get(set.getCompoundForString("C"))+"\n\n");
+
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //-------------------------------------------------------------------------------------------kmerNonOverlap
+        if (requestCode == 130 && resultCode == RESULT_OK) {
+            Uri fileUri = data.getData(); //The uri with the location of the file
+
+            try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+                FastaReader<DNASequence, NucleotideCompound> fastaReader = new FastaReader<>(
+                        fileInputsteam,
+                        new GenericFastaHeaderParser<DNASequence, NucleotideCompound>(),
+                        new DNASequenceCreator(DNACompoundSet.getDNACompoundSet()));
+
+                LinkedHashMap<String, DNASequence> sequences = fastaReader.process();
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+
+
+                    DNASequence seq = sequences.get(key);
+                    List<SequenceView<NucleotideCompound>> list = SequenceMixin.nonOverlappingKmers(seq, 7);
+                    CompoundSet<NucleotideCompound> set = seq.getCompoundSet();
+
+                    outputView.append(nrSeq + " : " + key + "; kmerNonOverlap count: "+list.size()+"\n");
+                    for(int i=0; i<list.size(); i++){
+                        outputView.append(i+": k-mer: "+ list.get(i).getSequenceAsString()+"\n");
+                    }
+                    outputView.append("\n");
+
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //-------------------------------------------------------------------------------------------kmerOverlap
+        if (requestCode == 131 && resultCode == RESULT_OK) {
+            Uri fileUri = data.getData(); //The uri with the location of the file
+
+            try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+                FastaReader<DNASequence, NucleotideCompound> fastaReader = new FastaReader<>(
+                        fileInputsteam,
+                        new GenericFastaHeaderParser<DNASequence, NucleotideCompound>(),
+                        new DNASequenceCreator(DNACompoundSet.getDNACompoundSet()));
+
+                LinkedHashMap<String, DNASequence> sequences = fastaReader.process();
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+                int nrSeq = 0;
+                for (String key : sequences.keySet()) {
+
+
+                    DNASequence seq = sequences.get(key);
+                    List<SequenceView<NucleotideCompound>> list = SequenceMixin.overlappingKmers(seq, 207);
+                    CompoundSet<NucleotideCompound> set = seq.getCompoundSet();
+
+                    outputView.append(nrSeq + " : " + key + "; kmerNonOverlap count: "+list.size()+"\n");
+                    for(int i=0; i<list.size(); i++){
+                        outputView.append(i+": k-mer: "+ list.get(i).getSequenceAsString()+"\n");
+                    }
+                    outputView.append("\n");
+
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //----------------------------------------------------------------------blast_report_paerser
+        if (requestCode == 132 && resultCode == RESULT_OK) {
+            Uri fileUri = data.getData(); //The uri with the location of the file
+
+            try (InputStream fileInputsteam = getContentResolver().openInputStream(fileUri)) {
+
+                BlastXMLParser instance = new BlastXMLParser();
+                instance.setStream(fileInputsteam);
+
+                List<Result> result = instance.createObjects(1e-10);
+
+                TextView outputView = (TextView) findViewById(outputView2);
+
+
+                for(Hit hit : result.iterator().next()){
+                    outputView.append(hit.getHitNum()+" : "+hit.getHitId()+" : "+hit.getHitDef()+" : "+hit.getHitAccession()+" : "+hit.getHitLen()+"\n");
+                    Log.d(LOG, hit.getHitNum()+" : "+hit.getHitId()+" : "+hit.getHitDef()+" : "+hit.getHitAccession()+" : "+hit.getHitLen()+" : evalue = "+hit.iterator().next().getHspEvalue()+"\n");
+                }
+
+//                Result res;
+//                int nrSeq = 0;
+//                for (int i=0;i<result.size();i++){
+//
+//                    res= result.get(i);
+//                    for(Hit hit : result.iterator().next()){
+//
+//                    }
+//
+//
+//                    Hit hit;
+//                    outputView.append(nrSeq + " : \n");
+//                    while (hit=res.iterator().next()){
+//                        outputView.append(nrSeq + " : "+res.iterator()+"\n");
+//                    }
+//                    outputView.append(nrSeq + " : "+res.iterator()+"\n");
+//                    for(int i=0; i<list.size(); i++){
+//                        outputView.append(i+": k-mer: "+ list.get(i).getSequenceAsString()+"\n");
+//                    }
+//                    outputView.append("\n");
+//                }
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
 
+
     }
 
-
-
-    private DNASequence getSeq(final String seq) throws CompoundNotFoundException {
-        String target = (seq == null) ? "ATGC" : seq;
-        return new DNASequence(target);
-    }
 }
