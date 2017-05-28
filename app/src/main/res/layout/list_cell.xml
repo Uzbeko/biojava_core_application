@@ -18,13 +18,13 @@
         android:textAlignment="center" />
 
     <Button
-        android:text="go"
+        android:id="@+id/List_But"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/List_But"
         android:layout_weight="5"
-        android:textSize="25dp"
-        android:background="#00b0f0"
+        android:background="@android:color/holo_green_light"
+        android:text="go"
         android:textColor="#ffffff"
+        android:textSize="25dp"
         android:textStyle="normal|bold" />
 </LinearLayout>

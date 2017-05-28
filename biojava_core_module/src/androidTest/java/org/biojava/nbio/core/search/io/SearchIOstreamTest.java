@@ -74,7 +74,7 @@ public class SearchIOstreamTest {
 //		InputStream is = null;
 //		try {
 //			is = MyApplication.getAppContext().getAssets().open(resource);
-//		} catch (IOException e) {                                                //Todo reiktu apdoroti exeptionus
+//		} catch (IOException e) {
 //			System.err.println("An IOException was caught :"+e.getMessage());
 //			e.printStackTrace();
 //		}
@@ -99,7 +99,7 @@ public class SearchIOstreamTest {
         InputStream is = null;
         try {
             is = MyApplication.getAppContext().getAssets().open(resource);
-        } catch (IOException e) {                                                //Todo reiktu apdoroti exeptionus
+        } catch (IOException e) {
             System.err.println("An IOException was caught :"+e.getMessage());
             e.printStackTrace();
         }
@@ -123,7 +123,7 @@ public class SearchIOstreamTest {
         InputStream is = null;
         try {
             is = MyApplication.getAppContext().getAssets().open(resource);
-        } catch (IOException e) {                                                //Todo reiktu apdoroti exeptionus
+        } catch (IOException e) {
             System.err.println("An IOException was caught :"+e.getMessage());
             e.printStackTrace();
         }

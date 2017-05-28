@@ -65,18 +65,16 @@ public class DefaultAAIndexProvider implements AAIndexProvider {
 	}
 
 	public InputStream getInputStreamToAAindexFile(){
-//		 return SubstitutionMatrixHelper.class.getResourceAsStream(String.format("/matrices/AAINDEX.txt"));
 
-		//-----pakeista
 		InputStream isReader = null;
 		try {
 			InputStream is = MyApplication.getAppContext().getAssets().open("matrices/AAINDEX.txt");
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		return isReader;
-		//---------
+
 	}
 
 }

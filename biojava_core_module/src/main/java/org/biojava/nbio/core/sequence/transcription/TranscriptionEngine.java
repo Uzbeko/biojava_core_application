@@ -69,7 +69,6 @@ public class TranscriptionEngine {
 	 * Protein. If you require anything that is not a default setting then look
 	 * at @ TranscriptionEngine.Builder} for customisation options.
 	 */
-	//TODO TranscriptionEngine getDefault() sutvarkyti daug kur kimba
 
 	public static TranscriptionEngine getDefault() {
 		if(IOD.INSTANCE == null){

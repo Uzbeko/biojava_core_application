@@ -70,16 +70,14 @@ public class FastaReaderTest extends TestCase{
 	@Test
 	public void testProcess() throws Exception {
 		Log.i(LOG,"process");
-//		InputStream inStream = this.getClass().getResourceAsStream("/PF00104_small.fasta"); //sena direktorija
 
-	//-----------------------------------------Evino pakeista
 		InputStream inStream = null;
 		try {
 			inStream = MyApplication.getAppContext().getAssets().open("PF00104_small.fasta");
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	//------------------end
+
 
 		assertNotNull(inStream);
 
@@ -119,17 +117,14 @@ public class FastaReaderTest extends TestCase{
 	@Test
 	public void processIntTest() throws Exception {
 		Log.i(LOG,"process(int)");
-		//pakeiciau source direktorija, nes androidas turi savo specifine!!!!!!!!!!!!!!!!!!!!!!!!
-//		InputStream inStream = this.getClass().getResourceAsStream("/PF00104_small.fasta"); //buvusi direktorija
 
-		//-----------------------------------------Evino pakeista
 		InputStream inStream = null;
 		try {
 			inStream = MyApplication.getAppContext().getAssets().open("PF00104_small.fasta");
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//------------------end
+
 
 
 		assertNotNull(inStream);
@@ -190,18 +185,13 @@ public class FastaReaderTest extends TestCase{
 	public void testSmallFasta(){
 
 		try {
-//			pakeiciau source direktorija, nes androidas turi savo specifine!!!!!!!!!!!!!!!!!!!!!!!!
-//			InputStream inStream  = this.getClass().getResourceAsStream("/test.fasta");  //buves
 
-			//-----------------------------------------Evino pakeista
 			InputStream inStream = null;
 			try {
 				inStream = MyApplication.getAppContext().getAssets().open("test.fasta");
-			} catch (IOException e) { //Todo reiktu padoroti exeptionus
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			//------------------end
-
 
 			FastaReader<ProteinSequence, AminoAcidCompound> fastaReader = new FastaReader<ProteinSequence, AminoAcidCompound>(
 					inStream,
@@ -234,19 +224,13 @@ public class FastaReaderTest extends TestCase{
 	@Test
 	public void testSmallFasta2(){
 
-		//Todo reiktu vidni ar isorini exeptiona naikinti
-		try {//pakeiciau source direktorija, nes androidas turi savo specifine!!!!!!!!!!!!!!!!!!!!!!!!
-//			InputStream inStream  = this.getClass().getResourceAsStream("/test.fasta");  //buves
-//			InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("test.fasta"); //naujas mano
-
-			//-----------------------------------------Evino pakeista
+		try {
 			InputStream inStream = null;
 			try {
 				inStream = MyApplication.getAppContext().getAssets().open("test.fasta");
-			} catch (IOException e) { //Todo reiktu padoroti exeptionus
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			//------------------end
 
 
 			FastaReader<ProteinSequence, AminoAcidCompound> fastaReader = new FastaReader<ProteinSequence, AminoAcidCompound>(

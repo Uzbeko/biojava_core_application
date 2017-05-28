@@ -60,7 +60,6 @@ public class SearchIOstream implements Iterable<Result>{
             "This extension is not associated with any parser. You can try to specify a ResultFactory object.";
 
 
-    //Todo mano pakeistos eilutes
     public SearchIOstream(InputStream is, ResultFactory_V2 factory, double maxEvalue) throws IOException, ParseException{
         this.fileInputStream = is;
         this.factory = factory;
@@ -68,15 +67,12 @@ public class SearchIOstream implements Iterable<Result>{
         readResultsStream();
     }
 
-    //Todo mano pakeistos eilutes
     public SearchIOstream(InputStream is, ResultFactory_V2 factory) throws IOException, ParseException{
         this.fileInputStream = is;
         this.factory = factory;
         readResultsStream();
     }
 
-
-    //Todo mano pakeistos eilutes
     private void readResultsStream() throws IOException, ParseException {
         factory.setStream(fileInputStream);
         results = factory.createObjects(evalueThreshold);

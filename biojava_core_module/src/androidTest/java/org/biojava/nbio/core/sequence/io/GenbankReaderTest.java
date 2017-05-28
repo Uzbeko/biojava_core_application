@@ -86,17 +86,13 @@ public class GenbankReaderTest {
 	public void testProcess() throws Exception {
 
 		Log.i(LOG, "process protein");
-        //pakeiciau source direktorija, nes androidas turi savo specifine!!!!!!!!!!!!!!!!!!!!!!!!
-//        InputStream inStream = this.getClass().getResourceAsStream("/BondFeature.gb");//senoji direktorija
 
-		//-----------------------------Edvino pakeista
 		InputStream inStream = null;
 		try {
 			inStream = MyApplication.getAppContext().getAssets().open("BondFeature.gb");
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//-----------------------End
 
 
 		assertNotNull(inStream);
@@ -112,16 +108,13 @@ public class GenbankReaderTest {
 		inStream.close();
 
 		Log.i(LOG, "process DNA");
-//		inStream = this.getClass().getResourceAsStream("/NM_000266.gb"); senoji direktorija
-
-		//-----------------------------Edvino pakeista
 
 		try {
 			inStream = MyApplication.getAppContext().getAssets().open("NM_000266.gb");
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//-----------------------End
+
 
 		assertNotNull(inStream);
 
@@ -141,16 +134,13 @@ public class GenbankReaderTest {
 	public void CDStest() throws Exception {
 		Log.i(LOG, "CDS Test");
 
-//		InputStream inStream = this.getClass().getResourceAsStream("/BondFeature.gb"); senoji direktorija
-
-		//-----------------------------Edvino pakeista
 		InputStream inStream = null;
 		try {
 			inStream = MyApplication.getAppContext().getAssets().open("BondFeature.gb");
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//-----------------------End
+
 
 		assertNotNull(inStream);
 

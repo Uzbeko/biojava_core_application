@@ -48,7 +48,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-//TODO neveikia, sutvarkyti
 
 @RunWith(AndroidJUnit4.class)
 public class SimpleProfileTest {

@@ -263,7 +263,6 @@ public class SearchIO implements Iterable<Result>{
             if (file.exists()) readResults();
         }
 
-        //Todo mano pakeistos eilutes
         public SearchIOstream(InputStream is, ResultFactory_V2 factory, double maxEvalue) throws IOException, ParseException{
             this.fileInputStream = is;
             this.factory = factory;
@@ -271,7 +270,6 @@ public class SearchIO implements Iterable<Result>{
             readResultsStream();
         }
 
-        //Todo mano pakeistos eilutes
         public SearchIOstream(InputStream is, ResultFactory_V2 factory) throws IOException, ParseException{
             this.fileInputStream = is;
             this.factory = factory;
@@ -291,7 +289,6 @@ public class SearchIO implements Iterable<Result>{
             results = factory.createObjects(evalueThreshold);
         }
 
-        //Todo mano pakeistos eilutes
         private void readResultsStream() throws IOException, ParseException {
             factory.setStream(fileInputStream);
             results = factory.createObjects(evalueThreshold);

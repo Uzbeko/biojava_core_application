@@ -94,24 +94,17 @@ public class BlastXMLParserTest {
 	 */
 	@Test
 	public void testCreateObjects() throws Exception {
-		//-----------------------------------------------sena versija
-//		System.out.println("createObjects");
-//		String resource = "/org/biojava/nbio/core/search/io/blast/small-blastreport.blastxml";
-//		File file = getFileForResource(resource);
 
-//		BlastXMLParser instance = new BlastXMLParser(); sena versija
-
-		//----------------------------------------Edvino prideta
 		InputStream classpathIs = null;
 		try {
 			classpathIs = MyApplication.getAppContext().getAssets().open("org/biojava/nbio/core/search/io/blast/small-blastreport.blastxml");
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		BlastXMLParser instance = new BlastXMLParser();
 		instance.setStream(classpathIs);
-		//-----------------------------------End
+
 
 		//instance.setQueryReferences(null);
 		//instance.setDatabaseReferences(null);

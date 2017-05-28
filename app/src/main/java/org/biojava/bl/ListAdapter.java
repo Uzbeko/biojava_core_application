@@ -3,6 +3,7 @@ package org.biojava.bl;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.biojava.coreapp.MainActivity;
 import org.biojava.coreapp.R;
 import java.util.ArrayList;
 
@@ -53,9 +56,13 @@ public class ListAdapter extends ArrayAdapter<String> {
                 ListView listView = (ListView) parentRow.getParent();
                 final int position = listView.getPositionForView(parentRow);
 
-                // It will change textview text :
-                Toast.makeText(v.getContext(), "position: "+position, Toast.LENGTH_LONG).show();
-                list_Txt.setText("Clicked Me!");
+//                // It will change textview text :
+//                Toast.makeText(v.getContext(), "position: "+position, Toast.LENGTH_LONG).show();
+//                list_Txt.setText("Clicked Me!");
+
+                View rootView=  (View) v.getRootView();
+                TextView outputView = (TextView) rootView.findViewById(R.id.outputView2);
+                outputView.setText("");
 
                 //open file
                 Intent intent = new Intent();

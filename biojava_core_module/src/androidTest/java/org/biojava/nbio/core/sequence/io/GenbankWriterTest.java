@@ -54,16 +54,13 @@ public class GenbankWriterTest extends TestCase{
 	@Test
 	public void testProcess() throws Exception {
 
-//		InputStream inStream = GenbankWriterTest.class.getResourceAsStream("/NM_000266.gb"); originalus varintas
-
-		//-----------------------------Edvino pakeista
 		InputStream inStream = null;
 		try {
 			inStream = MyApplication.getAppContext().getAssets().open("NM_000266.gb");
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//-----------------------End
+
 
 
 		//File dnaFile = new File("src/test/resources/NM_000266.gb");

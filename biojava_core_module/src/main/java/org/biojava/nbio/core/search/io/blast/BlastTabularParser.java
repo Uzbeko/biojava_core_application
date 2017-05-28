@@ -113,13 +113,13 @@ public class BlastTabularParser implements ResultFactory_V2 {
 	}
 
 
-	public InputStream fileInputStream(){ 											//Todo pamineti kad pridejau metoda
+	public InputStream fileInputStream(){
 		InputStream is = null;
 
 		if(fileUrl != null) {
 			try {
 				is = MyApplication.getAppContext().getAssets().open(fileUrl);
-			} catch (IOException e) {                                                //Todo reiktu apdoroti exeptionus
+			} catch (IOException e) {
 				System.err.println("An IOException was caught :"+e.getMessage());
 				e.printStackTrace();
 			}
@@ -130,7 +130,7 @@ public class BlastTabularParser implements ResultFactory_V2 {
 	@Override
 	public List<Result> createObjects(double maxEScore) throws IOException, ParseException {
 		List<Result> results = new ArrayList<Result>();
-																					//Todo pamineti kad pakeiciau sita dali
+
 		if (targetFile == null && fileUrl == null) throw new IllegalStateException("File to be parsed not specified.");
 
 		if(targetFile == null){
@@ -197,9 +197,9 @@ public class BlastTabularParser implements ResultFactory_V2 {
 		return results;
 	}
 
-	private int getFileLineCount(InputStream is){			//Todo mano metodas failo eilutems skaiciuoti
+	private int getFileLineCount(InputStream is){
 
-		Log.i(LOG, "Query for hits");
+        Log.i(LOG, "Query for hits");
 		int linesCount = 0;
 		try(LineNumberReader lnr = new LineNumberReader(new InputStreamReader(is))){
 			lnr.skip(Long.MAX_VALUE);
@@ -207,7 +207,7 @@ public class BlastTabularParser implements ResultFactory_V2 {
 			Log.i(LOG, fileLinesCount + " hits approximately in all results");
 			lnr.close();
 		} catch (IOException e) {
-			e.printStackTrace();							//Todo exeptionus sutvarkyti
+			e.printStackTrace();
 		}
 
 		return linesCount;

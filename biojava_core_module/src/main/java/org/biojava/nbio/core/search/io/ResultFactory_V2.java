@@ -29,10 +29,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.List;
 
-/**
- *Edvino pakeitimas
- * praplėstas ResultFactory interfeisas
- */
 
 public interface ResultFactory_V2 extends ResultFactory {
 	void setStream(InputStream is);

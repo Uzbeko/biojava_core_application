@@ -150,7 +150,7 @@ public class InputStreamProvider {
 
 	}
 
-//Todo Edvino pakeista------------------------------------
+
 	public InputStream getInputStream(Uri uri) throws IOException {
 
 		int magic = 0;
@@ -182,7 +182,6 @@ public class InputStreamProvider {
 		return  fileInputstream;
 	}
 
-//-----------------------------------------------------------------------------------------------
 	/**
 	 * Get an InputStream for the file.
 	 * The caller is responsible for closing the stream or otherwise

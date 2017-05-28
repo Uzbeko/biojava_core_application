@@ -112,17 +112,14 @@ public class ClasspathResource {
 
 	private InputStream createClasspathInputStream() {
 		final InputStream is;
-		//pakeiciau source direktorija, nes androidas turi savo specifine!!!!!!!!!!!!!!!!!!!!!!!!
-//		final InputStream classpathIs = getClass().getClassLoader().getResourceAsStream(location);//senoji direktorija
 
-//Todo Edvino pakeista
 		InputStream classpathIs = null;
 		try {
 			classpathIs = MyApplication.getAppContext().getAssets().open(location);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//--------------------------------------------------
+
 		if(classpathIs == null) {
 			throw new IllegalArgumentException("Location "+
 					location+" resulted in a null InputStream");

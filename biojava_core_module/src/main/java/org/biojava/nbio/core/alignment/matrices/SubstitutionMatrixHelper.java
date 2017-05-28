@@ -281,7 +281,7 @@ public class SubstitutionMatrixHelper implements Serializable {
 			InputStream is = MyApplication.getAppContext().getAssets().open(String.format("%s.txt",
 					resourcePathPrefix+file));
 			isReader = new InputStreamReader(is);
-		} catch (IOException e) { //Todo reiktu padoroti exeptionus
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 

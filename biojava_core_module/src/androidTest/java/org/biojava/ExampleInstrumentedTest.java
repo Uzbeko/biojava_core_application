@@ -60,7 +60,7 @@
 //        InputStream classpathIs = null;
 //        try {
 //            classpathIs = MyApplication.getAppContext().getAssets().open("org/biojava/nbio/core/search/io/blast/small-blastreport.blastxml");
-//        } catch (IOException e) { //Todo reiktu padoroti exeptionus
+//        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
 //
@@ -136,7 +136,7 @@
 //        InputStream classpathIs = null;
 //        try {
 //            classpathIs = MyApplication.getAppContext().getAssets().open("org/biojava/nbio/core/search/io/blast/small-blastreport.blastxml");
-//        } catch (IOException e) { //Todo reiktu padoroti exeptionus
+//        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
 //
@@ -280,7 +280,7 @@
 //        InputStream is = null;
 //        try {
 //            is = MyApplication.getAppContext().getAssets().open(resource);
-//        } catch (IOException e) {                                                //Todo reiktu apdoroti exeptionus
+//        } catch (IOException e) {
 //            System.err.println("An IOException was caught :"+e.getMessage());
 //            e.printStackTrace();
 //        }

@@ -31,8 +31,6 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 
 
-//TODO sutvarkyti logerius
-
 import static org.junit.Assert.assertEquals;
 
 /**

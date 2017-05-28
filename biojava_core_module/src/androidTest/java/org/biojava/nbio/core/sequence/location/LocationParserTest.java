@@ -35,7 +35,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-//TODO sutvarkyti logerius
 
 /**
  * TODO: Temporary test is switched off. Currently results are messy:

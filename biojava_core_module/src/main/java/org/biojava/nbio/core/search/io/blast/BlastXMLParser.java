@@ -110,7 +110,7 @@ public static final String LOG = BlastXMLParser.class.getSimpleName();
 
 	@Override
 	public List<Result> createObjects(double maxEScore) throws IOException, ParseException {
-		//Todo sita sutvarkaiua  pamineti rasant
+
 		if (targetFile == null && fileInputStream == null) throw new IllegalStateException("File to be parsed not specified.");
 
 		if(targetFile == null){
