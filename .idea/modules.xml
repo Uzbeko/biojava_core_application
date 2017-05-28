@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/biojava-aligment/biojava-aligment.iml" filepath="$PROJECT_DIR$/biojava-aligment/biojava-aligment.iml" />
       <module fileurl="file://$PROJECT_DIR$/biojava_core_application.iml" filepath="$PROJECT_DIR$/biojava_core_application.iml" />
       <module fileurl="file://$PROJECT_DIR$/biojava_core_module/biojava_core_module.iml" filepath="$PROJECT_DIR$/biojava_core_module/biojava_core_module.iml" />
     </modules>
