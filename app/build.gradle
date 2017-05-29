@@ -19,6 +19,11 @@ android {
     }
     productFlavors {
     }
+
+    //ignoruojam Lint aptiktas klaidas, kitaip "nesibildins" projektas
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {

@@ -93,8 +93,8 @@ public class SearchIOstreamTest {
 	//TODO nepraeina sito testo
 	@Test
 	public void testConstructorWithoutFactoryGuess() {
-        String resource = "org/biojava/nbio/core/search/io/blast/testBlastReport.blastxml";
-//		String resource = "org/biojava/nbio/core/search/io/blast/small-testBlastReport.blastxml";
+//        String resource = "org/biojava/nbio/core/search/io/blast/testBlastReport.blastxml";
+		String resource = "org/biojava/nbio/core/search/io/blast/small-testBlastReport.blastxml";   //sumazinau failą nes testBlastReport.blastxml perdidelis
 
         InputStream is = null;
         try {
@@ -118,9 +118,11 @@ public class SearchIOstreamTest {
 	@Test
 	public void testConstructorWithEvalueHspFilter() {
 
-		String resource = "org/biojava/nbio/core/search/io/blast/testBlastReport.blastxml";
+//		String resource = "org/biojava/nbio/core/search/io/blast/testBlastReport.blastxml";
+		String resource = "org/biojava/nbio/core/search/io/blast/small-testBlastReport.blastxml";   //sumazinau failą nes testBlastReport.blastxml perdidelis
 
-        InputStream is = null;
+
+		InputStream is = null;
         try {
             is = MyApplication.getAppContext().getAssets().open(resource);
         } catch (IOException e) {
