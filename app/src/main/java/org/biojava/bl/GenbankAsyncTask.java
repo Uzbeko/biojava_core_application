@@ -17,7 +17,12 @@ import java.io.IOException;
 
 public class GenbankAsyncTask extends AsyncTask {
 
-    private String sequence;
+    private GenbankResponse observer;
+
+
+    public GenbankAsyncTask(GenbankResponse bserver){
+        this.observer = bserver;
+    }
 
     @Override
     protected String doInBackground(Object[] params) {
@@ -45,12 +50,6 @@ public class GenbankAsyncTask extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        sequence = (String) o;
-
-    }
-//-----------------------------getters setters-------------------
-
-    public String getSequence() {
-        return sequence;
+        observer.onGenbankResponse((String) o);
     }
 }
