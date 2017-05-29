@@ -1,7 +1,9 @@
 package org.biojava.bl;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,12 +11,19 @@ import android.widget.TextView;
 
 import org.biojava.MyApplication;
 import org.biojava.coreapp.MainActivity;
+import org.biojava.nbio.alignment.Alignments;
+import org.biojava.nbio.alignment.SimpleGapPenalty;
+import org.biojava.nbio.alignment.template.GapPenalty;
+import org.biojava.nbio.alignment.template.PairwiseSequenceAligner;
+import org.biojava.nbio.core.alignment.matrices.SubstitutionMatrixHelper;
+import org.biojava.nbio.core.alignment.template.SequencePair;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.search.io.Hit;
 import org.biojava.nbio.core.search.io.Result;
 import org.biojava.nbio.core.search.io.blast.BlastXMLParser;
 import org.biojava.nbio.core.sequence.DNASequence;
 import org.biojava.nbio.core.sequence.ProteinSequence;
+import org.biojava.nbio.core.sequence.compound.AmbiguityDNACompoundSet;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava.nbio.core.sequence.compound.DNACompoundSet;
@@ -37,6 +46,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,14 +58,18 @@ import static org.biojava.coreapp.R.id.outputView2;
  * Created by edvinas on 17.5.24.
  */
 
-public class Controller {
+public class Controller  implements GenbankResponse {
 
     public static final String LOG = Controller.class.getSimpleName();
 
 
     private Uri fileUri;
     private int caseIndex;
+    private Context activityContext;
 
+    public Controller (Context context){
+        this.activityContext = context;
+    }
 
 //-------------------methods------------------------------------
 
@@ -94,6 +108,8 @@ public class Controller {
                 return genebankParse (fileUri);
             case 134:
                 return genebankProxyReader (fileUri);
+            case 135:
+                return needlemanWunsch (fileUri);
         }
 
         return "";
@@ -502,27 +518,84 @@ public class Controller {
             }
         return result.toString();
     }
-    //----------------------------------------------------------------------genebank fom internet (NP_000257)
+    //----------------------------------------------------------------------genebank from internet (NP_000257)
     public String genebankProxyReader (Uri fileUri){
 
-            StringBuilder result = new StringBuilder();
-
-            GenbankAsyncTask genbAsyncTask = new GenbankAsyncTask();
+            GenbankAsyncTask genbAsyncTask = new GenbankAsyncTask(this);
             genbAsyncTask.execute("");
-            result.append("sequence: "+genbAsyncTask.getSequence());
 
-        return result.toString();
+        return "wait for result";
     }
-
-//--------------------setter and getters------------------------
-
-
 
     public String getColerctionAssString(List collection){
         return TextUtils.join(" \n\n ", collection);
     }
 
+    @Override
+    public void onGenbankResponse(String result) {
+
+        MainActivity mainActivity = (MainActivity) activityContext;
+        mainActivity.setTextView(result);
+    }
+
+
 //    public void setFileInputStream(InputStream fileInputStream) {
 //        this.fileInputStream = fileInputStream;
 //    }
+    //----------------------------------------------------------------------needlemanWunsch išlyginimas
+    public String needlemanWunsch (Uri fileUri) {
+
+        StringBuilder result = new StringBuilder();
+
+        try (InputStream fileInputsteam = MyApplication.getAppContext().getContentResolver().openInputStream(fileUri)) {
+
+            FastaReader<DNASequence, NucleotideCompound> fastaReader = new FastaReader<>(
+                    fileInputsteam,
+                    new GenericFastaHeaderParser<DNASequence, NucleotideCompound>(),
+                    new DNASequenceCreator(DNACompoundSet.getDNACompoundSet()));
+
+            LinkedHashMap<String, DNASequence> sequences = fastaReader.process();
+
+            Iterator iterator = sequences.keySet().iterator();
+
+            String target = sequences.get(iterator.next()).toString();
+            String query = sequences.get(iterator.next()).toString();
+//            GapPenalty penalty = new SimpleGapPenalty(-14, -4);
+//            GapPenalty penalty = new SimpleGapPenalty(5,2);
+            GapPenalty penalty = new SimpleGapPenalty();
+            PairwiseSequenceAligner<DNASequence, NucleotideCompound> aligner = Alignments.getPairwiseAligner(
+                    new DNASequence(query, AmbiguityDNACompoundSet.getDNACompoundSet()),
+                    new DNASequence(target, AmbiguityDNACompoundSet.getDNACompoundSet()),
+                    Alignments.PairwiseSequenceAlignerType.GLOBAL,
+                    penalty, SubstitutionMatrixHelper.getNuc4_4());
+            SequencePair<DNASequence, NucleotideCompound>
+                    alignment = aligner.getPair();
+
+            Log.i(LOG,"Alignment: \n"+ alignment);
+
+            int identical = alignment.getNumIdenticals();
+            Log.i(LOG,"Number of identical residues: "+ identical);
+            Log.i(LOG, "% identical query: "+ identical / (float) query.length());
+            Log.i(LOG, "% identical target: "+ identical / (float) target.length());
+
+
+            result.append("Alignment: \n"+ alignment);
+            result.append("Number of identical residues: "+ identical+"\n");
+            result.append("% identical query: "+ identical / (float) query.length()+"\n");
+            result.append("% identical target: "+ identical / (float) target.length());
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CompoundNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result.toString();
+
+    }
+
+
 }
