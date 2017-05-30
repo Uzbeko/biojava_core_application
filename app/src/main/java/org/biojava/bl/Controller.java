@@ -496,7 +496,7 @@ public class Controller  implements GenbankResponse {
 
         return resultSq.toString();
     }
-    //----------------------------------------------------------------------genebank
+    //---------------------------------------------------------------------genebank
     public String genebankParse (Uri fileUri){
 
         StringBuilder result = new StringBuilder();
