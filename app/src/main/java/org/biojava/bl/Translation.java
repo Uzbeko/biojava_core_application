@@ -52,14 +52,14 @@ public class Translation {
                     TranscriptionEngine.Builder().dnaCompounds(ambiguityDNACompoundSet).rnaCompounds(nucleotideCompoundSet).build();
 
             Frame[] sixFrames = Frame.getAllFrames();
-
+            Map<Frame, Sequence<AminoAcidCompound>> results;
             for (DNASequence dna : dnaSequences.values()) {
 
-                Map<Frame, Sequence<AminoAcidCompound>> results = engine.multipleFrameTranslation(dna, sixFrames);
+                results = engine.multipleFrameTranslation(dna, sixFrames);
 
                 for (Frame frame : sixFrames){
 
-                    stringList.add("Translated Frame:" + frame + " : " + results.get(frame));
+                    stringList.add("Trans_Frame:" + frame + " : " + results.get(frame));
                     //System.out.println(dna.getRNASequence(frame).getProteinSequence(engine));
 
                     ProteinSequence ps = new ProteinSequence(results.get(frame).getSequenceAsString());
