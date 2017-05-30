@@ -46,7 +46,7 @@ public class GenbankAsyncTask extends AsyncTask {
             e.printStackTrace();
         }
 
-        return "Sequence("+proteinSequence.getAccession()+","+proteinSequence.getLength()+") = "+proteinSequence.getSequenceAsString().substring(0, 10)+"...";
+        return "Sequence("+proteinSequence.getAccession()+","+proteinSequence.getLength()+") = "+proteinSequence.getSequenceAsString().substring(0, 100)+"...";
     }
 
     @Override
