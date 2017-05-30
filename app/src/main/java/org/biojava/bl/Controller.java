@@ -40,9 +40,11 @@ import org.biojava.nbio.core.sequence.template.SequenceView;
 import org.biojava.nbio.core.sequence.views.ComplementSequenceView;
 import org.biojava.nbio.core.sequence.views.ReversedSequenceView;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Collections;
@@ -520,28 +522,23 @@ public class Controller  implements GenbankResponse {
     }
     //----------------------------------------------------------------------genebank from internet (NP_000257)
     public String genebankProxyReader (Uri fileUri){
+        String result="NP_000257";
 
-            GenbankAsyncTask genbAsyncTask = new GenbankAsyncTask(this);
+        try (InputStream fileInputsteam = MyApplication.getAppContext().getContentResolver().openInputStream(fileUri)) {
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(fileInputsteam));
+            result = in.readLine();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        GenbankAsyncTask genbAsyncTask = new GenbankAsyncTask(this,result);
             genbAsyncTask.execute("");
 
         return "wait for result";
     }
 
-    public String getColerctionAssString(List collection){
-        return TextUtils.join(" \n\n ", collection);
-    }
-
-    @Override
-    public void onGenbankResponse(String result) {
-
-        MainActivity mainActivity = (MainActivity) activityContext;
-        mainActivity.setTextView(result);
-    }
-
-
-//    public void setFileInputStream(InputStream fileInputStream) {
-//        this.fileInputStream = fileInputStream;
-//    }
     //----------------------------------------------------------------------needlemanWunsch išlyginimas
     public String needlemanWunsch (Uri fileUri) {
 
@@ -596,6 +593,12 @@ public class Controller  implements GenbankResponse {
         return result.toString();
 
     }
+    //-------------------------------------------------------
+    @Override
+    public void onGenbankResponse(String result) {
 
+        MainActivity mainActivity = (MainActivity) activityContext;
+        mainActivity.setTextView(result);
+    }
 
 }

@@ -18,10 +18,12 @@ import java.io.IOException;
 public class GenbankAsyncTask extends AsyncTask {
 
     private GenbankResponse observer;
+    private String id;
 
 
-    public GenbankAsyncTask(GenbankResponse bserver){
+    public GenbankAsyncTask(GenbankResponse bserver, String id){
         this.observer = bserver;
+        this.id = id;
     }
 
     @Override
@@ -31,7 +33,7 @@ public class GenbankAsyncTask extends AsyncTask {
 
         try {
             GenbankProxySequenceReader<AminoAcidCompound> genbankProteinReader = null;
-            genbankProteinReader = new GenbankProxySequenceReader<AminoAcidCompound>(System.getProperty("java.io.tmpdir"), "NP_000257", AminoAcidCompoundSet.getAminoAcidCompoundSet());
+            genbankProteinReader = new GenbankProxySequenceReader<AminoAcidCompound>(System.getProperty("java.io.tmpdir"), id, AminoAcidCompoundSet.getAminoAcidCompoundSet());
             proteinSequence = new ProteinSequence(genbankProteinReader);
             genbankProteinReader.getHeaderParser().parseHeader(genbankProteinReader.getHeader(), proteinSequence);
 //        Log.i(LOG,"Sequence("+proteinSequence.getAccession()+","+proteinSequence.getLength()+") = "+proteinSequence.getSequenceAsString().substring(0, 10)+"...");
@@ -43,7 +45,6 @@ public class GenbankAsyncTask extends AsyncTask {
         } catch (CompoundNotFoundException e) {
             e.printStackTrace();
         }
-
 
         return "Sequence("+proteinSequence.getAccession()+","+proteinSequence.getLength()+") = "+proteinSequence.getSequenceAsString().substring(0, 10)+"...";
     }

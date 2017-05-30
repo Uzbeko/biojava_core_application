@@ -56,10 +56,6 @@ public class ListAdapter extends ArrayAdapter<String> {
                 ListView listView = (ListView) parentRow.getParent();
                 final int position = listView.getPositionForView(parentRow);
 
-//                // It will change textview text :
-//                Toast.makeText(v.getContext(), "position: "+position, Toast.LENGTH_LONG).show();
-//                list_Txt.setText("Clicked Me!");
-
                 View rootView=  (View) v.getRootView();
                 TextView outputView = (TextView) rootView.findViewById(R.id.outputView2);
                 outputView.setText("");
@@ -70,7 +66,6 @@ public class ListAdapter extends ArrayAdapter<String> {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 Activity host = (Activity) v.getContext();
                 host.startActivityForResult(Intent.createChooser(intent, "Select a file"), (120+position));
-
             }
         });
 

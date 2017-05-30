@@ -1,6 +1,7 @@
 package org.biojava.coreapp;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,54 +56,36 @@ public class MainActivity extends AppCompatActivity {
 
 
     private ListView buttonList;
-    private ArrayList list = new ArrayList();
     private ArrayList<String> myData=new ArrayList<String>();
-    private ArrayAdapter adapter;
 
-    private TextView outputView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-//---------------------------------------------------------------------
-//        ActivityManager.RunningAppProcessInfo info = new ActivityManager.RunningAppProcessInfo();
-//        ActivityManager.getMyMemoryState(info);
-////        final InputStream classpathIs = getClass().getClassLoader().getResourceAsStream("org/biojava/nbio/core/sequence/iupac.txt");//senoji direktorij
-//        XmlPullParserFactory factory = null;
-//        try {
-//            factory = XmlPullParserFactory.newInstance();
-//            XmlPullParser parser = factory.newPullParser();
-//        } catch (XmlPullParserException e) {
-//            e.printStackTrace();
-//        }
 
-
-        Log.e(LOG, System.getProperty("os.name"));
-        outputView = (TextView) findViewById(outputView2);
 //---------button list---------------------------------------------------------
         buttonList = (ListView) findViewById(R.id.Buttons);
 
-        myData.add("Translate");
-        myData.add("to_RNA");
-        myData.add("ParseFasta");
-        myData.add("inversija");
-        myData.add("komplementari");
-        myData.add("reversija");
-        myData.add("posekis");
-        myData.add("GC count");
-        myData.add("AT count");
-        myData.add("composition");
-        myData.add("kmerNonOverlap");
-        myData.add("kmerOverlap");
-        myData.add("blast_report_paerser");
-        myData.add("genebank");
-        myData.add("genebank fom internet (NP_000257)");
-        myData.add("needlemanWunsch(global)");
+        myData.add("1. Translate");
+        myData.add("2. to_RNA");
+        myData.add("3. ParseFasta");
+        myData.add("4. inversija");
+        myData.add("5. komplementari");
+        myData.add("6. reversija");
+        myData.add("7. posekis");
+        myData.add("8. GC count");
+        myData.add("9. AT count");
+        myData.add("10. composition");
+        myData.add("11. kmerNonOverlap");
+        myData.add("12. kmerOverlap");
+        myData.add("13. blast_report_paerser");
+        myData.add("14. genebank");
+        myData.add("15. genebank fom internet");
+        myData.add("16. needlemanWunsch(global)");
 
         ListAdapter adapter = new ListAdapter(this,myData);
         buttonList.setAdapter(adapter);
-
 
     }
 
@@ -116,8 +99,10 @@ public class MainActivity extends AppCompatActivity {
             Controller control = new Controller(this);
             String result = control.swichCase(requestCode, fileUri);
             TextView outputView = (TextView) findViewById(outputView2);
+            outputView.setTypeface(Typeface.MONOSPACE);                 //visos raides vienodo ilgio
             outputView.setText(result);
         }
+
     }
 
     public void setTextView(String result){
